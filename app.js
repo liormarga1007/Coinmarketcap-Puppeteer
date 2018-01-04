@@ -16,10 +16,13 @@ async function getCoinsScreen() {
     const page = await browser.newPage();
     await page.goto(rippleURL,{waitUntil: 'networkidle2'});
 
-    await page.screenshot({ path: 'ripple.jpg' });
+    const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+    const oldBoundingBox = await element.boundingBox();
+    oldBoundingBox.width= 500;
+    await page.screenshot({ path: 'ripple.jpg' ,clip: oldBoundingBox});
     browser.close();
 }
-getCoinsScreen();
+//getCoinsScreen();
 
 var server = http.createServer(function (req, res) {
     if (req.url.search('ripple.jpg')>0)
@@ -43,6 +46,7 @@ function displayGrid(res) {
     });
 }
 function displayripple(res) {
+    getCoinsScreen();
     fs.readFile('ripple.jpg', function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
