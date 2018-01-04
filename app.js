@@ -7,14 +7,14 @@ const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
 
 async function getCoinsScreen() {
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         gpu: false,
         scrollbars: false,
         args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking' ]
     });
 
     const page = await browser.newPage();
-    await page.goto(rippleURL,{waitUntil: 'networkidle2'});
+    await page.goto(rippleURL);
 
     const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
     const oldBoundingBox = await element.boundingBox();
