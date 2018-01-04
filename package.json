@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/liormarga/Coinmarketcap-Puppeteer/issues"
   },
-  "homepage": "https://github.com/liormarga/Coinmarketcap-Puppeteer#readme"
+  "homepage": "https://github.com/liormarga/Coinmarketcap-Puppeteer#readme",
+  "dependencies": {
+    "puppeteer": "^0.13.0"
+  }
 }
