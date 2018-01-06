@@ -25,32 +25,38 @@ const coins = [{
                     url: tronURL
                 }
 ]
-
+let browser =null;
 async function getCoinsScreen() {
-    const browser = await puppeteer.launch({
-        headless: true,
-        gpu: false,
-        scrollbars: false,
-        args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking' ]
-    });
+    if (browser == null)
+        browser = await puppeteer.launch({
+            headless: false,
+            gpu: false,
+            scrollbars: false,
+            args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking' ]
+        });
 
     const page = await browser.newPage();
     for (coin in coins){
         try {
-            await page.goto(`${coins[coin].url}`,{timeout: 3000,waitUntil:'load'});
+            try {
+                await page.goto(`${coins[coin].url}`,{timeout: 1700,waitUntil:'load'});
+            } catch (error) {
+            }
+            await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)',{timeout:1000});
+            const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+            const oldBoundingBox = await element.boundingBox();
+            oldBoundingBox.width= 700;
+            await page.screenshot({ path: `${coins[coin].name}.jpg` ,clip: oldBoundingBox});
         } catch (error) {
-            
+            console.log(coins[coin].name)
+            continue;
         }
-        await page.waitFor('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-        const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-        const oldBoundingBox = await element.boundingBox();
-        oldBoundingBox.width= 500;
-        await page.screenshot({ path: `${coins[coin].name}.jpg` ,clip: oldBoundingBox});
+        
     }
-    
-    browser.close();
+    await page.close();
+   
 }
-//getCoinsScreen();
+
 
 var server = http.createServer(async function (req, res) {
     const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|favicon)?\/?(.*)/i) || ['', '', ''];
