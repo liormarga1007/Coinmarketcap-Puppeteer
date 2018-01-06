@@ -37,7 +37,7 @@ async function getCoinsScreen() {
     const page = await browser.newPage();
     for (coin in coins){
         try {
-            await page.goto(`${coins[coin].url}`,{timeout: 2500,waitUntil:'load'});
+            await page.goto(`${coins[coin].url}`,{timeout: 3000,waitUntil:'load'});
         } catch (error) {
             
         }
