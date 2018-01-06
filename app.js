@@ -4,6 +4,17 @@ const fs = require('fs');
 const puppeteer = require('puppeteer');
 
 const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
+const bitcoinURL='https://coinmarketcap.com/currencies/bitcoin/';
+
+const coins = [{
+                name:'ripple',
+                url: rippleURL
+                },
+                {
+                name:'bitcoin',
+                url: bitcoinURL
+                }
+]
 
 async function getCoinsScreen() {
     const browser = await puppeteer.launch({
@@ -14,22 +25,42 @@ async function getCoinsScreen() {
     });
 
     const page = await browser.newPage();
-    await page.goto(rippleURL);
-
-    const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-    const oldBoundingBox = await element.boundingBox();
-    oldBoundingBox.width= 500;
-    await page.screenshot({ path: 'ripple.jpg' ,clip: oldBoundingBox});
+    for (coin in coins){
+        try {
+            await page.goto(`${coins[coin].url}`,{timeout: 3000,waitUntil:'load'});
+        } catch (error) {
+            
+        }
+        await page.waitFor('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+        const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+        const oldBoundingBox = await element.boundingBox();
+        oldBoundingBox.width= 500;
+        await page.screenshot({ path: `${coins[coin].name}.jpg` ,clip: oldBoundingBox});
+    }
+    
     browser.close();
 }
 //getCoinsScreen();
 
-var server = http.createServer(function (req, res) {
-    if (req.url.search('ripple.jpg')>0)
+var server = http.createServer(async function (req, res) {
+    const [_, lior, url] = req.url.match(/^\/(ripple|bitcoin|pdf)?\/?(.*)/i) || ['', '', ''];
+    if (req.url.search('ripple.jpg|bitcoin')>0)
     {
-        displayripple(res);
+        switch(lior){
+            case 'ripple':{
+                await displayripple(res);
+                break;
+            }                
+            case 'bitcoin':{
+                await displaybitcoin(res)
+                break;
+            }
+                
+        }
+        
     }
     else{
+        await getCoinsScreen();
         displayGrid(res);
     }
     
@@ -46,7 +77,6 @@ function displayGrid(res) {
     });
 }
 function displayripple(res) {
-    getCoinsScreen();
     fs.readFile('ripple.jpg', function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
@@ -56,6 +86,15 @@ function displayripple(res) {
         res.end();
     });
 }
-
+function displaybitcoin(res) {
+    fs.readFile('bitcoin.jpg', function (err, data) {
+        res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': data.length
+        });
+        res.write(data);
+        res.end();
+    });
+}
 server.listen(8880);
 console.log("server listening on 8888");
