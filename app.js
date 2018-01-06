@@ -5,14 +5,24 @@ const puppeteer = require('puppeteer');
 
 const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
 const bitcoinURL='https://coinmarketcap.com/currencies/bitcoin/';
+const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
+const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 
 const coins = [{
-                name:'ripple',
-                url: rippleURL
+                    name:'ripple',
+                    url: rippleURL
                 },
                 {
-                name:'bitcoin',
-                url: bitcoinURL
+                    name:'bitcoin',
+                    url: bitcoinURL
+                },
+                {
+                    name:'cardano',
+                    url: cardanoURL
+                },
+                {
+                    name:'tron',
+                    url: tronURL
                 }
 ]
 
@@ -27,7 +37,7 @@ async function getCoinsScreen() {
     const page = await browser.newPage();
     for (coin in coins){
         try {
-            await page.goto(`${coins[coin].url}`,{timeout: 3000,waitUntil:'load'});
+            await page.goto(`${coins[coin].url}`,{timeout: 2500,waitUntil:'load'});
         } catch (error) {
             
         }
@@ -43,27 +53,34 @@ async function getCoinsScreen() {
 //getCoinsScreen();
 
 var server = http.createServer(async function (req, res) {
-    const [_, lior, url] = req.url.match(/^\/(ripple|bitcoin|pdf)?\/?(.*)/i) || ['', '', ''];
-    if (req.url.search('ripple.jpg|bitcoin')>0)
-    {
-        switch(lior){
-            case 'ripple':{
-                await displayripple(res);
-                break;
-            }                
-            case 'bitcoin':{
-                await displaybitcoin(res)
-                break;
-            }
-                
+    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|favicon)?\/?(.*)/i) || ['', '', ''];
+
+    switch(coinname){
+        case 'ripple':{
+            await displayripple(res);
+            break;
+        }                
+        case 'bitcoin':{
+            await displaybitcoin(res)
+            break;
         }
-        
+        case 'cardano':{
+            await displaycardano(res)
+            break;
+        }
+        case 'tron':{
+            await displaytron(res)
+            break;
+        }
+        case 'favicon':{
+            break;
+        }
+        default: {
+            await getCoinsScreen();
+            displayGrid(res);
+        }
+            
     }
-    else{
-        await getCoinsScreen();
-        displayGrid(res);
-    }
-    
 });
 
 function displayGrid(res) {
@@ -88,6 +105,26 @@ function displayripple(res) {
 }
 function displaybitcoin(res) {
     fs.readFile('bitcoin.jpg', function (err, data) {
+        res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': data.length
+        });
+        res.write(data);
+        res.end();
+    });
+}
+function displaycardano(res) {
+    fs.readFile('cardano.jpg', function (err, data) {
+        res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': data.length
+        });
+        res.write(data);
+        res.end();
+    });
+}
+function displaytron(res) {
+    fs.readFile('tron.jpg', function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
                 'Content-Length': data.length
