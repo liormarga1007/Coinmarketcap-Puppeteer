@@ -35,26 +35,33 @@ async function getCoinsScreen() {
             args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking' ]
         });
 
-    const page = await browser.newPage();
+    
     for (coin in coins){
+       
         try {
-            try {
-                await page.goto(`${coins[coin].url}`,{timeout: 1700,waitUntil:'load'});
-            } catch (error) {
-            }
-            await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)',{timeout:1000});
-            const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+            const page = await browser.newPage();
+            await page.goto(`${coins[coin].url}`,{timeout:500});
+        } catch (error) {
+        }
+    }
+    const pages = await browser.pages();
+    for (let i=1; i<pages.length; i++){   
+        try{            
+            await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+            const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
             const oldBoundingBox = await element.boundingBox();
             oldBoundingBox.width= 700;
-            await page.screenshot({ path: `${coins[coin].name}.jpg` ,clip: oldBoundingBox});
-        } catch (error) {
-            console.log(coins[coin].name)
+            await pages[i].screenshot({ path: `${coins[i-1].name}.jpg` ,clip: oldBoundingBox});
+        }             
+        catch (error) {
+            console.log(error)
             continue;
         }
         
     }
-    await page.close();
-   
+    for (let i=1; i<pages.length; i++){   
+        await pages[i].close();
+    }   
 }
 
 
@@ -96,6 +103,7 @@ function displayGrid(res) {
                 'Content-Length': data.length
         });
         res.write(data);
+        console.log(res);
         res.end();
     });
 }
@@ -140,4 +148,4 @@ function displaytron(res) {
     });
 }
 server.listen(8880);
-console.log("server listening on 8888");
+console.log("server listening on 8880");
