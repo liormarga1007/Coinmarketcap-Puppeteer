@@ -13,22 +13,26 @@ const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 let coins = [{
                     name:'ripple',
                     url: rippleURL,
-                    price:0
+                    price:0,
+                    ammount:114
                 },
                 {
                     name:'bitcoin',
                     url: bitcoinURL,
-                    price:0
+                    price:0,
+                    ammount:0.1
                 },
                 {
                     name:'cardano',
                     url: cardanoURL,
-                    price:0
+                    price:0,
+                    ammount:140
                 },
                 {
                     name:'tron',
                     url: tronURL,
-                    price:0
+                    price:0,
+                    ammount:1100
                 }
 ]
 let browser =null;
@@ -55,7 +59,11 @@ async function getCoinsScreen() {
         try{            
             await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
             const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-            coins[i-1].price = 30;
+            const quote_price = await pages[i].$$('#quote_price');
+            const innerText = await quote_price[0].getProperty('innerText')
+            const pricestring= await innerText.jsonValue()
+            const pricenumber = pricestring.match(/(\d[\d\.]*)/g)
+            coins[i-1].price =  pricestring.replace(/(\d[\d\.]*)/g,pricenumber*coins[i-1].ammount)
             const oldBoundingBox = await element.boundingBox();
             oldBoundingBox.width= 700;
             await pages[i].screenshot({ path: `${coins[i-1].name}.jpg` ,clip: oldBoundingBox});
@@ -106,8 +114,10 @@ var server = http.createServer(async function (req, res) {
 
 async function displayGrid(res) {
     const newdom = await JSDOM.fromFile("coins.html")
-    newdom.window.document.body.querySelectorAll('div')[1].appendChild(newdom.window.document.createElement("p"));
-    newdom.window.document.body.querySelectorAll('p')[0].innerHTML=`${coins[1].price}`;
+    for (let i=0; i<coins.length; i++){  
+        newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
+        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`${coins[i].price}`;
+    }
     console.log(newdom.serialize());
     res.write(newdom.serialize());
     res.end();
