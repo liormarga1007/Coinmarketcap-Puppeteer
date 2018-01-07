@@ -2,27 +2,33 @@
 const http = require('http');
 const fs = require('fs');
 const puppeteer = require('puppeteer');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
 const bitcoinURL='https://coinmarketcap.com/currencies/bitcoin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 
-const coins = [{
+let coins = [{
                     name:'ripple',
-                    url: rippleURL
+                    url: rippleURL,
+                    price:0
                 },
                 {
                     name:'bitcoin',
-                    url: bitcoinURL
+                    url: bitcoinURL,
+                    price:0
                 },
                 {
                     name:'cardano',
-                    url: cardanoURL
+                    url: cardanoURL,
+                    price:0
                 },
                 {
                     name:'tron',
-                    url: tronURL
+                    url: tronURL,
+                    price:0
                 }
 ]
 let browser =null;
@@ -49,6 +55,7 @@ async function getCoinsScreen() {
         try{            
             await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
             const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+            coins[i-1].price = 30;
             const oldBoundingBox = await element.boundingBox();
             oldBoundingBox.width= 700;
             await pages[i].screenshot({ path: `${coins[i-1].name}.jpg` ,clip: oldBoundingBox});
@@ -90,24 +97,20 @@ var server = http.createServer(async function (req, res) {
         }
         default: {
             await getCoinsScreen();
+
             displayGrid(res);
         }
             
     }
 });
 
-function displayGrid(res) {
-    fs.readFile('coins.html', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'text/html',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        JSDOM.fromFile("coins.html", options).then(dom => {
-            console.log(dom.serialize());
-          });
-        res.end();
-    });
+async function displayGrid(res) {
+    const newdom = await JSDOM.fromFile("coins.html")
+    newdom.window.document.body.querySelectorAll('div')[1].appendChild(newdom.window.document.createElement("p"));
+    newdom.window.document.body.querySelectorAll('p')[0].innerHTML=`${coins[1].price}`;
+    console.log(newdom.serialize());
+    res.write(newdom.serialize());
+    res.end();
 }
 function displayripple(res) {
     fs.readFile('ripple.jpg', function (err, data) {
