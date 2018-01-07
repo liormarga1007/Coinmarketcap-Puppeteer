@@ -11,6 +11,7 @@ const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 const funfairURL = 'https://coinmarketcap.com/currencies/funfair/';
 const poeURL = 'https://coinmarketcap.com/currencies/poet/'
+const enjURL = 'https://coinmarketcap.com/currencies/enjin-coin/'
 
 let coins = [{
                     name:'ripple',
@@ -48,13 +49,19 @@ let coins = [{
                     price:0,
                     ammount:200
                 },
+                {
+                    name:'enj',
+                    url: enjURL,
+                    price:0,
+                    ammount:100
+                }
 
 ]
 let browser =null;
 async function getCoinsScreen() {
     if (browser == null)
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             gpu: false,
             scrollbars: false,
             args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking' ]
@@ -96,7 +103,7 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|enj|favicon)?\/?(.*)/i) || ['', '', ''];
 
     switch(coinname){
         case 'ripple':{
@@ -121,6 +128,10 @@ var server = http.createServer(async function (req, res) {
         }
         case 'poe':{
             await displaypoe(res)
+            break;
+        }
+        case 'enj':{
+            await displayenj(res)
             break;
         }
         case 'favicon':{
@@ -197,6 +208,16 @@ function displayfunfair(res) {
 }
 function displaypoe(res) {
     fs.readFile('poe.jpg', function (err, data) {
+        res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': data.length
+        });
+        res.write(data);
+        res.end();
+    });
+}
+function displayenj(res) {
+    fs.readFile('enj.jpg', function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
                 'Content-Length': data.length
