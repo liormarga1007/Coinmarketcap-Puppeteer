@@ -10,6 +10,7 @@ const bitcoinURL='https://coinmarketcap.com/currencies/bitcoin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 const funfairURL = 'https://coinmarketcap.com/currencies/funfair/';
+const poeURL = 'https://coinmarketcap.com/currencies/poet/'
 
 let coins = [{
                     name:'ripple',
@@ -40,7 +41,14 @@ let coins = [{
                     url: funfairURL,
                     price:0,
                     ammount:433
-                }
+                },
+                {
+                    name:'poe',
+                    url: poeURL,
+                    price:0,
+                    ammount:200
+                },
+
 ]
 let browser =null;
 async function getCoinsScreen() {
@@ -69,8 +77,8 @@ async function getCoinsScreen() {
             const quote_price = await pages[i].$$('#quote_price');
             const innerText = await quote_price[0].getProperty('innerText')
             const pricestring= await innerText.jsonValue()
-            const pricenumber = pricestring.match(/(\d[\d\.]*)/g)
-            coins[i-1].price =  pricestring.replace(/(\d[\d\.]*)/g,pricenumber*coins[i-1].ammount)
+            const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
+            coins[i-1].price =  pricestring.replace(/(\d[\d\.\,]*)/g,pricenumber*coins[i-1].ammount)
             const oldBoundingBox = await element.boundingBox();
             oldBoundingBox.width= 700;
             await pages[i].screenshot({ path: `${coins[i-1].name}.jpg` ,clip: oldBoundingBox});
@@ -88,7 +96,7 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|favicon)?\/?(.*)/i) || ['', '', ''];
 
     switch(coinname){
         case 'ripple':{
@@ -109,6 +117,10 @@ var server = http.createServer(async function (req, res) {
         }
         case 'funfair':{
             await displayfunfair(res)
+            break;
+        }
+        case 'poe':{
+            await displaypoe(res)
             break;
         }
         case 'favicon':{
@@ -175,6 +187,16 @@ function displaytron(res) {
 }
 function displayfunfair(res) {
     fs.readFile('funfair.jpg', function (err, data) {
+        res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': data.length
+        });
+        res.write(data);
+        res.end();
+    });
+}
+function displaypoe(res) {
+    fs.readFile('poe.jpg', function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
                 'Content-Length': data.length
