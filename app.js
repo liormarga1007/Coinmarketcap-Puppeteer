@@ -9,6 +9,7 @@ const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
 const bitcoinURL='https://coinmarketcap.com/currencies/bitcoin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
+const funfairURL = 'https://coinmarketcap.com/currencies/funfair/';
 
 let coins = [{
                     name:'ripple',
@@ -33,13 +34,19 @@ let coins = [{
                     url: tronURL,
                     price:0,
                     ammount:1100
+                },
+                {
+                    name:'funfair',
+                    url: funfairURL,
+                    price:0,
+                    ammount:433
                 }
 ]
 let browser =null;
 async function getCoinsScreen() {
     if (browser == null)
         browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             gpu: false,
             scrollbars: false,
             args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking' ]
@@ -50,7 +57,7 @@ async function getCoinsScreen() {
        
         try {
             const page = await browser.newPage();
-            await page.goto(`${coins[coin].url}`,{timeout:500});
+            await page.goto(`${coins[coin].url}`,{timeout:200});
         } catch (error) {
         }
     }
@@ -81,7 +88,7 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|favicon)?\/?(.*)/i) || ['', '', ''];
 
     switch(coinname){
         case 'ripple':{
@@ -98,6 +105,10 @@ var server = http.createServer(async function (req, res) {
         }
         case 'tron':{
             await displaytron(res)
+            break;
+        }
+        case 'funfair':{
+            await displayfunfair(res)
             break;
         }
         case 'favicon':{
@@ -118,7 +129,7 @@ async function displayGrid(res) {
         newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
         newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`${coins[i].price}`;
     }
-    console.log(newdom.serialize());
+    //console.log(newdom.serialize());
     res.write(newdom.serialize());
     res.end();
 }
@@ -154,6 +165,16 @@ function displaycardano(res) {
 }
 function displaytron(res) {
     fs.readFile('tron.jpg', function (err, data) {
+        res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': data.length
+        });
+        res.write(data);
+        res.end();
+    });
+}
+function displayfunfair(res) {
+    fs.readFile('funfair.jpg', function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
                 'Content-Length': data.length
