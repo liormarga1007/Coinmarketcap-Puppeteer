@@ -103,7 +103,9 @@ function displayGrid(res) {
                 'Content-Length': data.length
         });
         res.write(data);
-        console.log(res);
+        JSDOM.fromFile("coins.html", options).then(dom => {
+            console.log(dom.serialize());
+          });
         res.end();
     });
 }
