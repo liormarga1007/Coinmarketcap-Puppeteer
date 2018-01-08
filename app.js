@@ -14,6 +14,7 @@ const poeURL = 'https://coinmarketcap.com/currencies/poet/'
 const enjURL = 'https://coinmarketcap.com/currencies/enjin-coin/'
 const xlmURL = 'https://coinmarketcap.com/currencies/stellar/'
 const xvgURL = 'https://coinmarketcap.com/currencies/verge/'
+const pacURL = 'https://coinmarketcap.com/currencies/paccoin/'
 
 let coins = [{
                     name:'ripple',
@@ -68,6 +69,12 @@ let coins = [{
                     url: xvgURL,
                     price:0,
                     ammount:139
+                },
+                {
+                    name:'pac',
+                    url: pacURL,
+                    price:0,
+                    ammount:206531
                 }
 ]
 let browser =null;
@@ -120,7 +127,7 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, suffix] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|enj|xlm|xvg|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, suffix] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|enj|xlm|xvg|pac|favicon)?\/?(.*)/i) || ['', '', ''];
     
     switch(coinname){
         case 'ripple':
@@ -132,6 +139,7 @@ var server = http.createServer(async function (req, res) {
         case 'enj':
         case 'xlm':
         case 'xvg':
+        case 'pac':
             await displaycoin(res,coinname);
             break;
         case 'favicon':
@@ -149,7 +157,7 @@ async function displayGrid(res) {
     const newdom = await JSDOM.fromFile("coins.html")
     for (let i=0; i<coins.length; i++){  
         newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
-        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} ${coins[i].price}`;
+        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price}`;
     }
     //console.log(newdom.serialize());
     res.write(newdom.serialize());
