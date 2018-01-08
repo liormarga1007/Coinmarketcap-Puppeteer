@@ -21,7 +21,7 @@ let coins = [{
                     name:'ripple',
                     url: rippleURL,
                     price:0,
-                    ammount:452
+                    ammount:581
                 },
                 {
                     name:'binance',
