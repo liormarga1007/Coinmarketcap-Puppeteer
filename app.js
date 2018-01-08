@@ -12,12 +12,14 @@ const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 const funfairURL = 'https://coinmarketcap.com/currencies/funfair/';
 const poeURL = 'https://coinmarketcap.com/currencies/poet/'
 const enjURL = 'https://coinmarketcap.com/currencies/enjin-coin/'
+const xlmURL = 'https://coinmarketcap.com/currencies/stellar/'
+const xvgURL = 'https://coinmarketcap.com/currencies/verge/'
 
 let coins = [{
                     name:'ripple',
                     url: rippleURL,
                     price:0,
-                    ammount:114
+                    ammount:556
                 },
                 {
                     name:'bitcoin',
@@ -29,33 +31,44 @@ let coins = [{
                     name:'cardano',
                     url: cardanoURL,
                     price:0,
-                    ammount:140
+                    ammount:1048
                 },
                 {
                     name:'tron',
                     url: tronURL,
                     price:0,
-                    ammount:1100
+                    ammount:4365
                 },
                 {
                     name:'funfair',
                     url: funfairURL,
                     price:0,
-                    ammount:433
+                    ammount:1299
                 },
                 {
                     name:'poe',
                     url: poeURL,
                     price:0,
-                    ammount:200
+                    ammount:800
                 },
                 {
                     name:'enj',
                     url: enjURL,
                     price:0,
-                    ammount:100
+                    ammount:400
+                },
+                {
+                    name:'xlm',
+                    url: xlmURL,
+                    price:0,
+                    ammount:440
+                },
+                {
+                    name:'xvg',
+                    url: xvgURL,
+                    price:0,
+                    ammount:139
                 }
-
 ]
 let browser =null;
 async function getCoinsScreen() {
@@ -78,17 +91,21 @@ async function getCoinsScreen() {
     }
     const pages = await browser.pages();
     for (let i=1; i<pages.length; i++){   
-        try{            
+        try{
+            //take screenshot             
             await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
             const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+            const oldBoundingBox = await element.boundingBox();
+            oldBoundingBox.width= 700;
+            await pages[i].screenshot({ path: `${coins[i-1].name}.jpg` ,clip: oldBoundingBox});
+
+            //calcualte the amount in USD
             const quote_price = await pages[i].$$('#quote_price');
             const innerText = await quote_price[0].getProperty('innerText')
             const pricestring= await innerText.jsonValue()
             const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-            coins[i-1].price =  pricestring.replace(/(\d[\d\.\,]*)/g,pricenumber*coins[i-1].ammount)
-            const oldBoundingBox = await element.boundingBox();
-            oldBoundingBox.width= 700;
-            await pages[i].screenshot({ path: `${coins[i-1].name}.jpg` ,clip: oldBoundingBox});
+            coins[i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*coins[i-1].ammount))
+            
         }             
         catch (error) {
             console.log(error)
@@ -103,45 +120,27 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, url] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|enj|favicon)?\/?(.*)/i) || ['', '', ''];
-
+    const [_, coinname, suffix] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|enj|xlm|xvg|favicon)?\/?(.*)/i) || ['', '', ''];
+    
     switch(coinname){
-        case 'ripple':{
-            await displayripple(res);
+        case 'ripple':
+        case 'bitcoin':
+        case 'cardano':
+        case 'tron':
+        case 'funfair':
+        case 'poe':
+        case 'enj':
+        case 'xlm':
+        case 'xvg':
+            await displaycoin(res,coinname);
             break;
-        }                
-        case 'bitcoin':{
-            await displaybitcoin(res)
+        case 'favicon':
             break;
-        }
-        case 'cardano':{
-            await displaycardano(res)
-            break;
-        }
-        case 'tron':{
-            await displaytron(res)
-            break;
-        }
-        case 'funfair':{
-            await displayfunfair(res)
-            break;
-        }
-        case 'poe':{
-            await displaypoe(res)
-            break;
-        }
-        case 'enj':{
-            await displayenj(res)
-            break;
-        }
-        case 'favicon':{
-            break;
-        }
-        default: {
+        
+        default: 
             await getCoinsScreen();
-
             displayGrid(res);
-        }
+        
             
     }
 });
@@ -150,74 +149,15 @@ async function displayGrid(res) {
     const newdom = await JSDOM.fromFile("coins.html")
     for (let i=0; i<coins.length; i++){  
         newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
-        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`${coins[i].price}`;
+        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} ${coins[i].price}`;
     }
     //console.log(newdom.serialize());
     res.write(newdom.serialize());
     res.end();
 }
-function displayripple(res) {
-    fs.readFile('ripple.jpg', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        res.end();
-    });
-}
-function displaybitcoin(res) {
-    fs.readFile('bitcoin.jpg', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        res.end();
-    });
-}
-function displaycardano(res) {
-    fs.readFile('cardano.jpg', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        res.end();
-    });
-}
-function displaytron(res) {
-    fs.readFile('tron.jpg', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        res.end();
-    });
-}
-function displayfunfair(res) {
-    fs.readFile('funfair.jpg', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        res.end();
-    });
-}
-function displaypoe(res) {
-    fs.readFile('poe.jpg', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        res.end();
-    });
-}
-function displayenj(res) {
-    fs.readFile('enj.jpg', function (err, data) {
+
+function displaycoin(res,coinName) {
+    fs.readFile(`${coinName}.jpg`, function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
                 'Content-Length': data.length
