@@ -20,7 +20,7 @@ let coins = [{
                     name:'ripple',
                     url: rippleURL,
                     price:0,
-                    ammount:556
+                    ammount:452
                 },
                 {
                     name:'binance',
@@ -161,7 +161,7 @@ async function displayGrid(res) {
         newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
         newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price}`;
     }
-    newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total}`;
+    newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total} USD`;
     //console.log(newdom.serialize());
     res.write(newdom.serialize());
     res.end();
