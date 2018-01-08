@@ -26,7 +26,7 @@ let coins = [{
                     name:'binance',
                     url: bitcoinURL,
                     price:0,
-                    ammount:55
+                    ammount:68
                 },
                 {
                     name:'cardano',
@@ -68,7 +68,7 @@ let coins = [{
                     name:'xvg',
                     url: xvgURL,
                     price:0,
-                    ammount:139
+                    ammount:509
                 },
                 {
                     name:'pac',
