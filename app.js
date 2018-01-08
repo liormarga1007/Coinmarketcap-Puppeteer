@@ -6,7 +6,7 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
 const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
-const bitcoinURL='https://coinmarketcap.com/currencies/bitcoin/';
+const bitcoinURL='https://coinmarketcap.com/currencies/binance-coin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 const funfairURL = 'https://coinmarketcap.com/currencies/funfair/';
@@ -23,10 +23,10 @@ let coins = [{
                     ammount:556
                 },
                 {
-                    name:'bitcoin',
+                    name:'binance',
                     url: bitcoinURL,
                     price:0,
-                    ammount:0.1
+                    ammount:55
                 },
                 {
                     name:'cardano',
@@ -78,6 +78,7 @@ let coins = [{
                 }
 ]
 let browser =null;
+let total = 0;
 async function getCoinsScreen() {
     if (browser == null)
         browser = await puppeteer.launch({
@@ -112,6 +113,7 @@ async function getCoinsScreen() {
             const pricestring= await innerText.jsonValue()
             const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
             coins[i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*coins[i-1].ammount))
+            total = total + Math.round(pricenumber*coins[i-1].ammount);
             
         }             
         catch (error) {
@@ -127,11 +129,11 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, suffix] = req.url.match(/^\/(ripple|bitcoin|cardano|tron|funfair|poe|enj|xlm|xvg|pac|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|favicon)?\/?(.*)/i) || ['', '', ''];
     
     switch(coinname){
         case 'ripple':
-        case 'bitcoin':
+        case 'binance':
         case 'cardano':
         case 'tron':
         case 'funfair':
@@ -159,6 +161,7 @@ async function displayGrid(res) {
         newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
         newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price}`;
     }
+    newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total}`;
     //console.log(newdom.serialize());
     res.write(newdom.serialize());
     res.end();
