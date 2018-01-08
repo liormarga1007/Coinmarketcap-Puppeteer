@@ -15,6 +15,7 @@ const enjURL = 'https://coinmarketcap.com/currencies/enjin-coin/'
 const xlmURL = 'https://coinmarketcap.com/currencies/stellar/'
 const xvgURL = 'https://coinmarketcap.com/currencies/verge/'
 const pacURL = 'https://coinmarketcap.com/currencies/paccoin/'
+const ethURL = 'https://coinmarketcap.com/currencies/ethereum/'
 
 let coins = [{
                     name:'ripple',
@@ -75,6 +76,12 @@ let coins = [{
                     url: pacURL,
                     price:0,
                     ammount:206531
+                },
+                {
+                    name:'eth',
+                    url: ethURL,
+                    price:0,
+                    ammount:0.73913371
                 }
 ]
 let browser =null;
@@ -110,7 +117,8 @@ async function getCoinsScreen() {
             //calcualte the amount in USD
             const quote_price = await pages[i].$$('#quote_price');
             const innerText = await quote_price[0].getProperty('innerText')
-            const pricestring= await innerText.jsonValue()
+            let pricestring= await innerText.jsonValue()
+            pricestring = pricestring.replace(/\,/g,'');
             const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
             coins[i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*coins[i-1].ammount))
             total = total + Math.round(pricenumber*coins[i-1].ammount);
@@ -129,7 +137,7 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|favicon)?\/?(.*)/i) || ['', '', ''];
     
     switch(coinname){
         case 'ripple':
@@ -142,6 +150,7 @@ var server = http.createServer(async function (req, res) {
         case 'xlm':
         case 'xvg':
         case 'pac':
+        case 'eth':
             await displaycoin(res,coinname);
             break;
         case 'favicon':
@@ -149,9 +158,7 @@ var server = http.createServer(async function (req, res) {
         
         default: 
             await getCoinsScreen();
-            displayGrid(res);
-        
-            
+            displayGrid(res);            
     }
 });
 
