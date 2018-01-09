@@ -101,7 +101,7 @@ async function getCoinsScreen() {
             headless: true,
             gpu: false,
             scrollbars: false,
-            args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking' ]
+            args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking','--no-sandbox', '--disable-setuid-sandbox' ]
         });
 
     
