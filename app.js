@@ -195,5 +195,5 @@ function displaycoin(res,coinName) {
         res.end();
     });
 }
-server.listen(8880);
-console.log("server listening on 8880");
+server.listen(port);
+console.log(`server listening on ${port}`);
