@@ -6,16 +6,17 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
 const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
-const bitcoinURL='https://coinmarketcap.com/currencies/binance-coin/';
+const binanceURL='https://coinmarketcap.com/currencies/binance-coin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
 const funfairURL = 'https://coinmarketcap.com/currencies/funfair/';
-const poeURL = 'https://coinmarketcap.com/currencies/poet/'
-const enjURL = 'https://coinmarketcap.com/currencies/enjin-coin/'
-const xlmURL = 'https://coinmarketcap.com/currencies/stellar/'
-const xvgURL = 'https://coinmarketcap.com/currencies/verge/'
-const pacURL = 'https://coinmarketcap.com/currencies/paccoin/'
-const ethURL = 'https://coinmarketcap.com/currencies/ethereum/'
+const poeURL = 'https://coinmarketcap.com/currencies/poet/';
+const enjURL = 'https://coinmarketcap.com/currencies/enjin-coin/';
+const xlmURL = 'https://coinmarketcap.com/currencies/stellar/';
+const xvgURL = 'https://coinmarketcap.com/currencies/verge/';
+const pacURL = 'https://coinmarketcap.com/currencies/paccoin/';
+const ethURL = 'https://coinmarketcap.com/currencies/ethereum/';
+const bitcoinURL = 'https://coinmarketcap.com/currencies/bitcoin/';
 
 let coins = [{
                     name:'ripple',
@@ -25,7 +26,7 @@ let coins = [{
                 },
                 {
                     name:'binance',
-                    url: bitcoinURL,
+                    url: binanceURL,
                     price:0,
                     ammount:68
                 },
@@ -82,7 +83,13 @@ let coins = [{
                     url: ethURL,
                     price:0,
                     ammount:0.73913371
-                }
+                },
+                {
+                    name:'bitcoin',
+                    url: bitcoinURL,
+                    price:0,
+                    ammount:0.0193798
+                }              
 ]
 let browser =null;
 let total = 0;
@@ -137,7 +144,7 @@ async function getCoinsScreen() {
 
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|bitcoin|favicon)?\/?(.*)/i) || ['', '', ''];
     
     switch(coinname){
         case 'ripple':
@@ -151,6 +158,7 @@ var server = http.createServer(async function (req, res) {
         case 'xvg':
         case 'pac':
         case 'eth':
+        case 'bitcoin':
             await displaycoin(res,coinname);
             break;
         case 'favicon':
