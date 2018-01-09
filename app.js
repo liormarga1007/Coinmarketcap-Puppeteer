@@ -5,6 +5,8 @@ const puppeteer = require('puppeteer');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
+const port = process.env.PORT || 8800;
+
 const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
 const binanceURL='https://coinmarketcap.com/currencies/binance-coin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
