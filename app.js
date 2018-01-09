@@ -114,7 +114,7 @@ async function getCoinsScreen() {
         }
     }
     const pages = await browser.pages();
-    for (let i=1; i<pages.length; i++){   
+    for (let i=1; i<3; i++){   
         try{
             //take screenshot             
             await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
