@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Read your favorites coins from coinmarketcap",
   "main": "app.js",
+  "engines": {
+    "node": "8.9.1"
+  },
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
