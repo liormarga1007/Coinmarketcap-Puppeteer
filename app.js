@@ -38,60 +38,60 @@ let coins = [{
                     price:0,
                     ammount:1048
                 },
-                {
-                    name:'tron',
-                    url: tronURL,
-                    price:0,
-                    ammount:4365
-                },
-                {
-                    name:'funfair',
-                    url: funfairURL,
-                    price:0,
-                    ammount:1299
-                },
-                {
-                    name:'poe',
-                    url: poeURL,
-                    price:0,
-                    ammount:800
-                },
-                {
-                    name:'enj',
-                    url: enjURL,
-                    price:0,
-                    ammount:400
-                },
-                {
-                    name:'xlm',
-                    url: xlmURL,
-                    price:0,
-                    ammount:440
-                },
-                {
-                    name:'xvg',
-                    url: xvgURL,
-                    price:0,
-                    ammount:509
-                },
-                {
-                    name:'pac',
-                    url: pacURL,
-                    price:0,
-                    ammount:206531
-                },
-                {
-                    name:'eth',
-                    url: ethURL,
-                    price:0,
-                    ammount:0.73913371
-                },
-                {
-                    name:'bitcoin',
-                    url: bitcoinURL,
-                    price:0,
-                    ammount:0.01595059
-                }              
+                // {
+                //     name:'tron',
+                //     url: tronURL,
+                //     price:0,
+                //     ammount:4365
+                // },
+                // {
+                //     name:'funfair',
+                //     url: funfairURL,
+                //     price:0,
+                //     ammount:1299
+                // },
+                // {
+                //     name:'poe',
+                //     url: poeURL,
+                //     price:0,
+                //     ammount:800
+                // },
+                // {
+                //     name:'enj',
+                //     url: enjURL,
+                //     price:0,
+                //     ammount:400
+                // },
+                // {
+                //     name:'xlm',
+                //     url: xlmURL,
+                //     price:0,
+                //     ammount:440
+                // },
+                // {
+                //     name:'xvg',
+                //     url: xvgURL,
+                //     price:0,
+                //     ammount:509
+                // },
+                // {
+                //     name:'pac',
+                //     url: pacURL,
+                //     price:0,
+                //     ammount:206531
+                // },
+                // {
+                //     name:'eth',
+                //     url: ethURL,
+                //     price:0,
+                //     ammount:0.73913371
+                // },
+                // {
+                //     name:'bitcoin',
+                //     url: bitcoinURL,
+                //     price:0,
+                //     ammount:0.01595059
+                // }              
 ]
 let browser =null;
 let total = 0;
@@ -114,7 +114,7 @@ async function getCoinsScreen() {
         }
     }
     const pages = await browser.pages();
-    for (let i=1; i<3; i++){   
+    for (let i=1; i<pages.length; i++){   
         try{
             //take screenshot             
             await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
