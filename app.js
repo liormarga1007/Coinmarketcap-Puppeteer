@@ -88,7 +88,7 @@ let coins = [{
                     name:'bitcoin',
                     url: bitcoinURL,
                     price:0,
-                    ammount:0.0193798
+                    ammount:0.01595059
                 }              
 ]
 let browser =null;
