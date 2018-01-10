@@ -131,7 +131,7 @@ async function getCoinsScreen() {
                 }
                                
             } catch (error) {
-                
+                page[k] = null;
             }
             k=k+1;
         }
