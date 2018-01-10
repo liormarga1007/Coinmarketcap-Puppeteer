@@ -152,15 +152,16 @@ async function getCoinsScreen() {
                     
                     let pricestring= await innerText.jsonValue();
                     innerText.dispose();
+                    
                     console.log(pricestring)
                     pricestring = pricestring.replace(/\,/g,'');
                     const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-                    //coins[j*2+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
+                    
                     coins[j*1+i].price = Math.round(pricenumber*currentoins[i].ammount)
-                    //total = total + Math.round(pricenumber*currentoins[i].ammount);
+                    
                     console.log(currentoins[i].name)
                     console.log(pricenumber*currentoins[i].ammount)
-                    //console.log(total)
+                    
                     await cache.set(currentoins[i].url,'true');
                 }
                 
