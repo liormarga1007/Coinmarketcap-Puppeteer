@@ -104,12 +104,14 @@ async function getCoinsScreen() {
             scrollbars: false,
             args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
         });
+
+    pages[0] = browser.pages[0];
     
     for (let j=0; j<2; j++){
         let k=0;
         let currentoins = coins.slice(j*6,j*6+6)
         for (coin in currentoins){
-            k=k+1;
+            
             try {
                 if (pages[k] == null){
                     pages[k] = await browser.newPage();
@@ -117,16 +119,17 @@ async function getCoinsScreen() {
                 await pages[k].goto(`${currentoins[coin].url}`,{timeout:500});
             } catch (error) {
             }
+            k=k+1;
         }
         
-        for (let i=1; i<pages.length; i++){   
+        for (let i=0; i<pages.length; i++){   
             try{
                 //take screenshot             
                 await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
                 const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
                 const oldBoundingBox = await element.boundingBox();
                 oldBoundingBox.width= 700;
-                await pages[i].screenshot({ path: `${currentoins[i-1].name}.jpg` ,clip: oldBoundingBox});
+                await pages[i].screenshot({ path: `${currentoins[i].name}.jpg` ,clip: oldBoundingBox});
     
                 //calcualte the amount in USD
                 const quote_price = await pages[i].$$('#quote_price');
@@ -134,8 +137,11 @@ async function getCoinsScreen() {
                 let pricestring= await innerText.jsonValue()
                 pricestring = pricestring.replace(/\,/g,'');
                 const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-                coins[j*6+i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i-1].ammount))
-                total = total + Math.round(pricenumber*currentoins[i-1].ammount);
+                coins[j*6+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
+                total = total + Math.round(pricenumber*currentoins[i].ammount);
+                console.log(currentoins[i].name)
+                console.log(pricenumber*currentoins[i].ammount)
+                console.log(total)
                 
             }             
             catch (error) {
