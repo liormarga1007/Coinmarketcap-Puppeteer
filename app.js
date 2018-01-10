@@ -116,9 +116,9 @@ async function getCoinsScreen() {
     const currentpages = await browser.pages();
     pages[0] = currentpages[0];
         
-    for (let j=0; j<6; j++){
+    for (let j=0; j<12; j++){
         let k=0;
-        let currentoins = coins.slice(j*2,j*2+2)
+        let currentoins = coins.slice(j*1,j*1+1)
         for (coin in currentoins){
             
             try {
@@ -136,7 +136,7 @@ async function getCoinsScreen() {
             k=k+1;
         }
         
-        for (let i=0; i<2; i++){   
+        for (let i=0; i<1; i++){   
             try{
                 if (!cache.has(currentoins[i].url)){ 
                 //take screenshot             
@@ -145,17 +145,18 @@ async function getCoinsScreen() {
                     const oldBoundingBox = await element.boundingBox();
                     oldBoundingBox.width= 700;
                     await pages[i].screenshot({ path: `${currentoins[i].name}.jpg` ,clip: oldBoundingBox});
-        
+                    element.dispose();
                     //calcualte the amount in USD
                     const quote_price = await pages[i].$$('#quote_price');
                     const innerText = await quote_price[0].getProperty('innerText')
                     
-                    let pricestring= await innerText.jsonValue()
+                    let pricestring= await innerText.jsonValue();
+                    innerText.dispose();
                     console.log(pricestring)
                     pricestring = pricestring.replace(/\,/g,'');
                     const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
                     //coins[j*2+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
-                    coins[j*2+i].price = Math.round(pricenumber*currentoins[i].ammount)
+                    coins[j*1+i].price = Math.round(pricenumber*currentoins[i].ammount)
                     //total = total + Math.round(pricenumber*currentoins[i].ammount);
                     console.log(currentoins[i].name)
                     console.log(pricenumber*currentoins[i].ammount)
