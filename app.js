@@ -107,7 +107,7 @@ let pages= [];
 async function getCoinsScreen() {
     if (browser == null)
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             gpu: false,
             scrollbars: false,
             args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
