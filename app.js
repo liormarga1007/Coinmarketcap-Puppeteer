@@ -116,9 +116,9 @@ async function getCoinsScreen() {
     const currentpages = await browser.pages();
     pages[0] = currentpages[0];
         
-    for (let j=0; j<3; j++){
+    for (let j=0; j<6; j++){
         let k=0;
-        let currentoins = coins.slice(j*4,j*4+4)
+        let currentoins = coins.slice(j*2,j*2+2)
         for (coin in currentoins){
             
             try {
@@ -136,7 +136,7 @@ async function getCoinsScreen() {
             k=k+1;
         }
         
-        for (let i=0; i<4; i++){   
+        for (let i=0; i<2; i++){   
             try{
                 if (!cache.has(currentoins[i].url)){ 
                 //take screenshot             
@@ -157,7 +157,7 @@ async function getCoinsScreen() {
                     pricestring = pricestring.replace(/\,/g,'');
                     const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
                     
-                    coins[j*4+i].price = Math.round(pricenumber*currentoins[i].ammount)
+                    coins[j*2+i].price = Math.round(pricenumber*currentoins[i].ammount)
                     
                     console.log(currentoins[i].name)
                     console.log(pricenumber*currentoins[i].ammount)
