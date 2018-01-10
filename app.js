@@ -127,7 +127,7 @@ async function getCoinsScreen() {
                     
                 }  
                 if (!cache.has(currentoins[coin].url)){
-                    await pages[k].goto(`${currentoins[coin].url}`,{timeout:500});                    
+                    await pages[k].goto(`${currentoins[coin].url}`,{timeout:1500});                    
                 }
                                
             } catch (error) {
