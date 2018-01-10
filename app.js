@@ -107,7 +107,7 @@ let pages= [];
 async function getCoinsScreen() {
     if (browser == null)
         browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             gpu: false,
             scrollbars: false,
             args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
@@ -127,48 +127,44 @@ async function getCoinsScreen() {
                     
                 }  
                 if (!cache.has(currentoins[coin].url)){
-                    await cache.set(currentoins[coin].url, pages[k]);
                     await pages[k].goto(`${currentoins[coin].url}`,{timeout:500});                    
                 }
-                else
-                {
-                    pages[k] =await cache.get(currentoins[coin].url);
-                }                  
-                
+                               
             } catch (error) {
                 
             }
             k=k+1;
         }
         
-        for (let i=0; i<pages.length; i++){   
+        for (let i=0; i<2; i++){   
             try{
-                 
+                if (!cache.has(currentoins[i].url)){ 
                 //take screenshot             
-                await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-                const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-                const oldBoundingBox = await element.boundingBox();
-                oldBoundingBox.width= 700;
-                await pages[i].screenshot({ path: `${currentoins[i].name}.jpg` ,clip: oldBoundingBox});
-    
-                //calcualte the amount in USD
-                const quote_price = await pages[i].$$('#quote_price');
-                const innerText = await quote_price[0].getProperty('innerText')
-                
-                let pricestring= await innerText.jsonValue()
-                console.log(pricestring)
-                pricestring = pricestring.replace(/\,/g,'');
-                const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-                coins[j*2+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
-                total = total + Math.round(pricenumber*currentoins[i].ammount);
-                console.log(currentoins[i].name)
-                console.log(pricenumber*currentoins[i].ammount)
-                console.log(total)
+                    await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                    const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                    const oldBoundingBox = await element.boundingBox();
+                    oldBoundingBox.width= 700;
+                    await pages[i].screenshot({ path: `${currentoins[i].name}.jpg` ,clip: oldBoundingBox});
+        
+                    //calcualte the amount in USD
+                    const quote_price = await pages[i].$$('#quote_price');
+                    const innerText = await quote_price[0].getProperty('innerText')
+                    
+                    let pricestring= await innerText.jsonValue()
+                    console.log(pricestring)
+                    pricestring = pricestring.replace(/\,/g,'');
+                    const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
+                    coins[j*2+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
+                    total = total + Math.round(pricenumber*currentoins[i].ammount);
+                    console.log(currentoins[i].name)
+                    console.log(pricenumber*currentoins[i].ammount)
+                    //console.log(total)
+                    await cache.set(currentoins[i].url,'true');
+                }
                 
             }             
             catch (error) {
                 console.log(error)
-                continue;
             }
             
         }
@@ -214,7 +210,6 @@ async function displayGrid(res) {
         newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price}`;
     }
     newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total} USD`;
-    total = 0;
     //console.log(newdom.serialize());
     res.write(newdom.serialize());
     res.end();
