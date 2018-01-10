@@ -84,7 +84,7 @@ let coins = [{
                     name:'eth',
                     url: ethURL,
                     price:0,
-                    ammount:1.21123835
+                    ammount:1.19528776
                 },
                 {
                     name:'bitcoin',
@@ -95,26 +95,30 @@ let coins = [{
 ]
 let browser =null;
 let total = 0;
+let pages= [];
 async function getCoinsScreen() {
     if (browser == null)
         browser = await puppeteer.launch({
             headless: true,
             gpu: false,
             scrollbars: false,
-            args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking','--no-sandbox', '--disable-setuid-sandbox' ]
+            args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
         });
-
+    
     for (let j=0; j<3; j++){
+        let k=0;
         let currentoins = coins.slice(j*4,j*4+4)
         for (coin in currentoins){
-       
+            k=k+1;
             try {
-                const page = await browser.newPage();
-                await page.goto(`${currentoins[coin].url}`,{timeout:1500});
+                if (pages[k] == null){
+                    pages[k] = await browser.newPage();
+                }                    
+                await pages[k].goto(`${currentoins[coin].url}`,{timeout:500});
             } catch (error) {
             }
         }
-        const pages = await browser.pages();
+        
         for (let i=1; i<pages.length; i++){   
             try{
                 //take screenshot             
@@ -140,9 +144,9 @@ async function getCoinsScreen() {
             }
             
         }
-        for (let i=1; i<pages.length; i++){   
+        /* for (let i=1; i<pages.length; i++){   
             await pages[i].close();
-        }
+        } */
     }
        
 }
