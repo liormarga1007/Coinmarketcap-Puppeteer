@@ -110,7 +110,7 @@ async function getCoinsScreen() {
        
             try {
                 const page = await browser.newPage();
-                await page.goto(`${currentoins[coin].url}`,{timeout:500});
+                await page.goto(`${currentoins[coin].url}`,{timeout:1500});
             } catch (error) {
             }
         }
