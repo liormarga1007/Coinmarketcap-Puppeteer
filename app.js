@@ -196,7 +196,7 @@ function displaycoin(res,coinName) {
     fs.readFile(`${coinName}.jpg`, function (err, data) {
         res.writeHead(200, {
             'Content-Type': 'image',
-                'Content-Length': data.length
+                'Content-Length': (data) ?data.length : 0
         });
         res.write(data);
         res.end();
