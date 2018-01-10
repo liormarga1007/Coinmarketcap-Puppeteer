@@ -3,6 +3,7 @@ const http = require('http');
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 const jsdom = require("jsdom");
+const LRU = require('lru-cache');
 const { JSDOM } = jsdom;
 
 const port = process.env.PORT || 8080;
@@ -93,6 +94,13 @@ let coins = [{
                     ammount:0.01595059
                 }              
 ]
+
+const cache = LRU({
+    max: 12 ,
+    maxAge: 1000 * 60*5 , // 5 minute
+    noDisposeOnSet: true,    
+  });
+
 let browser =null;
 let total = 0;
 let pages= [];
@@ -108,23 +116,34 @@ async function getCoinsScreen() {
     const currentpages = await browser.pages();
     pages[0] = currentpages[0];
         
-    for (let j=0; j<4; j++){
+    for (let j=0; j<6; j++){
         let k=0;
-        let currentoins = coins.slice(j*3,j*3+3)
+        let currentoins = coins.slice(j*2,j*2+2)
         for (coin in currentoins){
             
             try {
                 if (pages[k] == null){
                     pages[k] = await browser.newPage();
-                }                    
-                await pages[k].goto(`${currentoins[coin].url}`,{timeout:500});
+                    
+                }  
+                if (!cache.has(currentoins[coin].url)){
+                    await cache.set(currentoins[coin].url, pages[k]);
+                    await pages[k].goto(`${currentoins[coin].url}`,{timeout:500});                    
+                }
+                else
+                {
+                    pages[k] =await cache.get(currentoins[coin].url);
+                }                  
+                
             } catch (error) {
+                
             }
             k=k+1;
         }
         
         for (let i=0; i<pages.length; i++){   
             try{
+                 
                 //take screenshot             
                 await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
                 const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
@@ -135,10 +154,12 @@ async function getCoinsScreen() {
                 //calcualte the amount in USD
                 const quote_price = await pages[i].$$('#quote_price');
                 const innerText = await quote_price[0].getProperty('innerText')
+                
                 let pricestring= await innerText.jsonValue()
+                console.log(pricestring)
                 pricestring = pricestring.replace(/\,/g,'');
                 const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-                coins[j*3+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
+                coins[j*2+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
                 total = total + Math.round(pricenumber*currentoins[i].ammount);
                 console.log(currentoins[i].name)
                 console.log(pricenumber*currentoins[i].ammount)
