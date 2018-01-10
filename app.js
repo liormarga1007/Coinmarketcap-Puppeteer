@@ -154,8 +154,9 @@ async function getCoinsScreen() {
                     console.log(pricestring)
                     pricestring = pricestring.replace(/\,/g,'');
                     const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-                    coins[j*2+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
-                    total = total + Math.round(pricenumber*currentoins[i].ammount);
+                    //coins[j*2+i].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i].ammount))
+                    coins[j*2+i].price = Math.round(pricenumber*currentoins[i].ammount)
+                    //total = total + Math.round(pricenumber*currentoins[i].ammount);
                     console.log(currentoins[i].name)
                     console.log(pricenumber*currentoins[i].ammount)
                     //console.log(total)
@@ -207,9 +208,11 @@ async function displayGrid(res) {
     const newdom = await JSDOM.fromFile("coins.html")
     for (let i=0; i<coins.length; i++){  
         newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
-        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price}`;
+        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price} USD`;
+        total = total + coins[i].price;
     }
     newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total} USD`;
+    total =0;
     //console.log(newdom.serialize());
     res.write(newdom.serialize());
     res.end();
