@@ -104,44 +104,47 @@ async function getCoinsScreen() {
             args: ['--reduce-security-for-testing', '--deterministic-fetch','--disable-background-networking','--no-sandbox', '--disable-setuid-sandbox' ]
         });
 
-    
-    for (coin in coins){
+    for (let j=0; j<3; j++){
+        let currentoins = coins.slice(j*4,j*4+4)
+        for (coin in currentoins){
        
-        try {
-            const page = await browser.newPage();
-            await page.goto(`${coins[coin].url}`,{timeout:200});
-        } catch (error) {
+            try {
+                const page = await browser.newPage();
+                await page.goto(`${currentoins[coin].url}`,{timeout:500});
+            } catch (error) {
+            }
         }
-    }
-    const pages = await browser.pages();
-    for (let i=1; i<pages.length; i++){   
-        try{
-            //take screenshot             
-            await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-            const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-            const oldBoundingBox = await element.boundingBox();
-            oldBoundingBox.width= 700;
-            await pages[i].screenshot({ path: `${coins[i-1].name}.jpg` ,clip: oldBoundingBox});
-
-            //calcualte the amount in USD
-            const quote_price = await pages[i].$$('#quote_price');
-            const innerText = await quote_price[0].getProperty('innerText')
-            let pricestring= await innerText.jsonValue()
-            pricestring = pricestring.replace(/\,/g,'');
-            const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-            coins[i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*coins[i-1].ammount))
-            total = total + Math.round(pricenumber*coins[i-1].ammount);
+        const pages = await browser.pages();
+        for (let i=1; i<pages.length; i++){   
+            try{
+                //take screenshot             
+                await pages[i].waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                const element = await pages[i].$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                const oldBoundingBox = await element.boundingBox();
+                oldBoundingBox.width= 700;
+                await pages[i].screenshot({ path: `${currentoins[i-1].name}.jpg` ,clip: oldBoundingBox});
+    
+                //calcualte the amount in USD
+                const quote_price = await pages[i].$$('#quote_price');
+                const innerText = await quote_price[0].getProperty('innerText')
+                let pricestring= await innerText.jsonValue()
+                pricestring = pricestring.replace(/\,/g,'');
+                const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
+                coins[j*4+i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i-1].ammount))
+                total = total + Math.round(pricenumber*currentoins[i-1].ammount);
+                
+            }             
+            catch (error) {
+                console.log(error)
+                continue;
+            }
             
-        }             
-        catch (error) {
-            console.log(error)
-            continue;
         }
-        
+        for (let i=1; i<pages.length; i++){   
+            await pages[i].close();
+        }
     }
-    for (let i=1; i<pages.length; i++){   
-        await pages[i].close();
-    }   
+       
 }
 
 
