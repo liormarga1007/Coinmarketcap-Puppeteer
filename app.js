@@ -105,9 +105,9 @@ async function getCoinsScreen() {
             args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
         });
     
-    for (let j=0; j<3; j++){
+    for (let j=0; j<2; j++){
         let k=0;
-        let currentoins = coins.slice(j*4,j*4+4)
+        let currentoins = coins.slice(j*6,j*6+6)
         for (coin in currentoins){
             k=k+1;
             try {
@@ -134,7 +134,7 @@ async function getCoinsScreen() {
                 let pricestring= await innerText.jsonValue()
                 pricestring = pricestring.replace(/\,/g,'');
                 const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-                coins[j*4+i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i-1].ammount))
+                coins[j*6+i-1].price = pricestring.replace(/(\d[\d\.\,]*)/g,Math.round(pricenumber*currentoins[i-1].ammount))
                 total = total + Math.round(pricenumber*currentoins[i-1].ammount);
                 
             }             
