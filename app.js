@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 
 const cache = LRU({
     max: 12 ,
-    maxAge: 1000 * 60 *3 , // 5 minute
+    maxAge: 1000 * 60 *3 , // 3 minute
     noDisposeOnSet: true,    
   });
 
@@ -78,12 +78,12 @@ function displaycoin(res,coinName) {
                 const page = await browser.newPage();                        
                 try {                
                     try {                  
-                        await page.goto(coins[coinName].url,{timeout:3000});
+                        await page.goto(coins[coinName].url,{timeout:1000});
                     } catch (error) {
                         
                     }
                     
-                    await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                    await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)',{timeout:3000});
                     const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
                     const oldBoundingBox = await element.boundingBox();
                     oldBoundingBox.width= 700;
