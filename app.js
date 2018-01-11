@@ -4,11 +4,12 @@ const fs = require('fs');
 const puppeteer = require('puppeteer');
 const jsdom = require("jsdom");
 const LRU = require('lru-cache');
+const coins = require('./CoinDescriptors');
 const { JSDOM } = jsdom;
 
 const port = process.env.PORT || 8080;
 
-const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
+/* const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
 const binanceURL='https://coinmarketcap.com/currencies/binance-coin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
@@ -93,7 +94,7 @@ let coins = [{
                     price:0,
                     ammount:0.01595059
                 }              
-]
+] */
 
 const cache = LRU({
     max: 12 ,
@@ -101,11 +102,11 @@ const cache = LRU({
     noDisposeOnSet: true,    
   });
 
-let browser =null;
+//let browser =null;
 let total = 0;
-let pages= [];
+//let pages= [];
 async function getCoinsScreen() {
-    if (browser == null)
+     if (browser == null)
         browser = await puppeteer.launch({
             headless: true,
             gpu: false,
@@ -170,7 +171,7 @@ async function getCoinsScreen() {
                 console.log(error)
             }
             
-        }
+        } 
         /* for (let i=1; i<pages.length; i++){   
             await pages[i].close();
         } */
@@ -201,7 +202,7 @@ var server = http.createServer(async function (req, res) {
             break;
         
         default: 
-            await getCoinsScreen();
+            //await getCoinsScreen();
             displayGrid(res);            
     }
 });
@@ -221,14 +222,69 @@ async function displayGrid(res) {
 }
 
 function displaycoin(res,coinName) {
-    fs.readFile(`${coinName}.jpg`, function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': (data) ?data.length : 0
-        });
-        res.write(data);
-        res.end();
-    });
+    //fs.readFile(`${coinName}.jpg`, function (err, data) {
+        if (!cache.has(coinName)){
+        (async() => {
+            const browser = await puppeteer.launch({
+                headless: false,
+                gpu: false,
+                scrollbars: false,
+                args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
+            });
+            const page = await browser.newPage();                        
+            try {                
+                try {                  
+                    await page.goto(coins[coinName].url,{timeout:1500});
+                } catch (error) {
+                    
+                }
+                
+                await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                const oldBoundingBox = await element.boundingBox();
+                oldBoundingBox.width= 700;
+
+
+                const quote_price = await page.$$('#quote_price');
+                const innerText = await quote_price[0].getProperty('innerText')
+                let pricestring= await innerText.jsonValue();
+                innerText.dispose();
+                
+                console.log(pricestring)
+                pricestring = pricestring.replace(/\,/g,'');
+                const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
+                
+                coins[coinName].price = Math.round(pricenumber*coins[coinName].ammount)
+                    
+                await page.screenshot({path: `${coins[coinName]}.jpg` ,clip: oldBoundingBox}).then(function(buffer) {
+                    res.writeHead(200, {
+                        'Content-Type': 'image',
+                            'Content-Length': (buffer) ?buffer.length : 0
+                    });
+                    res.write(buffer);
+                    res.end();
+                });
+                element.dispose();
+                await cache.set(coinName,'true');
+            } catch (error) {
+                console.log(error)
+            }            
+            await browser.close();
+        })();
+    }
+    else {
+        (async() => {
+            fs.readFile(`${coinName}.jpg`, function (err, buffer) {
+                res.writeHead(200, {
+                    'Content-Type': 'image',
+                        'Content-Length': (buffer) ?buffer.length : 0
+                });
+                res.write(buffer);
+                res.end(); 
+            }); 
+        })();          
+    }
+    
 }
 server.listen(port);
 console.log(`server listening on ${port}`);
