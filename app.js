@@ -40,6 +40,11 @@ var server = http.createServer(async function (req, res) {
             await displaycoin(res,coinname);
             break;
         case 'favicon':
+            res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': 0
+            });
+            res.end();
             break;        
         default: 
             displayGrid(res);            
