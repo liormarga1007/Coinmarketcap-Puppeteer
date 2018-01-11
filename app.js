@@ -78,7 +78,7 @@ function displaycoin(res,coinName) {
                 const page = await browser.newPage();                        
                 try {                
                     try {                  
-                        await page.goto(coins[coinName].url,{timeout:1000});
+                        await page.goto(coins[coinName].url,{timeout:3000});
                     } catch (error) {
                         
                     }
