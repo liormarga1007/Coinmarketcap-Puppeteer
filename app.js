@@ -95,16 +95,17 @@ if (counter.get() < 2){
                 
                 coins[coinName].price = Math.round(pricenumber*coins[coinName].ammount)
                     
-                await page.screenshot({path: `${coins[coinName]}.jpg` ,clip: oldBoundingBox}).then(function(buffer) {
+                await page.screenshot({clip: oldBoundingBox}).then(function(buffer) {
                     res.writeHead(200, {
                         'Content-Type': 'image',
                             'Content-Length': (buffer) ?buffer.length : 0
                         });
+                        cache.set(coinName,buffer);
                     res.write(buffer);
                     res.end();
                 });
                 element.dispose();
-                await cache.set(coinName,'true');
+                
             } catch (error) {
                 console.log(error)
             }            
@@ -114,17 +115,26 @@ if (counter.get() < 2){
     }
     else {
         (async() => {
-            fs.readFile(`${coinName}.jpg`, function (err, buffer) {
+            const buffer = await cache.get(coinName);
+            //fs.readFile(`${coinName}.jpg`, function (err, buffer) {
                 res.writeHead(200, {
                     'Content-Type': 'image',
                         'Content-Length': (buffer) ?buffer.length : 0
                     });
                 res.write(buffer);
                 res.end(); 
-                }); 
+                //}); 
             })();          
         }
     }
+    else{
+        res.writeHead(200, {
+            'Content-Type': 'image',
+                'Content-Length': 0
+            });
+        res.end();
+    }
 }
+
 server.listen(port);
 console.log(`server listening on ${port}`);
