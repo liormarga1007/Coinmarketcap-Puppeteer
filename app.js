@@ -133,11 +133,25 @@ function displaycoin(res,coinName) {
             }
         }
     else{
-        res.writeHead(200, {
-            'Content-Type': 'image',
-                'Content-Length': 0
-            });
-    res.end();
+        (async() => {
+            const buffer = await cache.get(coinName);
+            if (buffer== null){
+                res.writeHead(200, {
+                    'Content-Type': 'image',
+                        'Content-Length': 0
+                    });
+                res.end();
+            }
+            else{
+                res.writeHead(200, {
+                    'Content-Type': 'image',
+                        'Content-Length': (buffer) ?buffer.length : 0
+                    });
+                res.write(buffer);
+                res.end();
+            }
+        })();
+        
     }
 }
 
