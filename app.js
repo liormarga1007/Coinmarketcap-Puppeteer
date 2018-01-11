@@ -65,79 +65,79 @@ async function displayGrid(res) {
 }
 
 function displaycoin(res,coinName) {
-if (counter.get() < 2){  
-    if (!cache.has(coinName)){
-        (async() => {
-            counter.increment();
-            const browser = await puppeteer.launch({
-                headless: true,
-                gpu: false,
-                scrollbars: false,
-                args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
-            });
-            const page = await browser.newPage();                        
-            try {                
-                try {                  
-                    await page.goto(coins[coinName].url,{timeout:1500});
+    if (counter.get() < 2){  
+        if (!cache.has(coinName)){
+            (async() => {
+                counter.increment();
+                const browser = await puppeteer.launch({
+                    headless: true,
+                    gpu: false,
+                    scrollbars: false,
+                    args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
+                });
+                const page = await browser.newPage();                        
+                try {                
+                    try {                  
+                        await page.goto(coins[coinName].url,{timeout:1000});
+                    } catch (error) {
+                        
+                    }
+                    
+                    await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                    const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
+                    const oldBoundingBox = await element.boundingBox();
+                    oldBoundingBox.width= 700;
+
+
+                    const quote_price = await page.$$('#quote_price');
+                    const innerText = await quote_price[0].getProperty('innerText')
+                    let pricestring= await innerText.jsonValue();
+                    innerText.dispose();
+                    
+                    console.log(pricestring)
+                    pricestring = pricestring.replace(/\,/g,'');
+                    const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
+                    
+                    coins[coinName].price = Math.round(pricenumber*coins[coinName].ammount)
+                        
+                    await page.screenshot({clip: oldBoundingBox}).then(function(buffer) {
+                        res.writeHead(200, {
+                            'Content-Type': 'image',
+                                'Content-Length': (buffer) ?buffer.length : 0
+                            });
+                            cache.set(coinName,buffer);
+                        res.write(buffer);
+                        res.end();
+                    });
+                    element.dispose();
+                    
                 } catch (error) {
-                    
-                }
-                
-                await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-                const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
-                const oldBoundingBox = await element.boundingBox();
-                oldBoundingBox.width= 700;
-
-
-                const quote_price = await page.$$('#quote_price');
-                const innerText = await quote_price[0].getProperty('innerText')
-                let pricestring= await innerText.jsonValue();
-                innerText.dispose();
-                
-                console.log(pricestring)
-                pricestring = pricestring.replace(/\,/g,'');
-                const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
-                
-                coins[coinName].price = Math.round(pricenumber*coins[coinName].ammount)
-                    
-                await page.screenshot({clip: oldBoundingBox}).then(function(buffer) {
+                    console.log(error)
+                }            
+                await browser.close();
+                counter.decrement();
+                })();
+        }
+        else {
+            (async() => {
+                const buffer = await cache.get(coinName);
+                //fs.readFile(`${coinName}.jpg`, function (err, buffer) {
                     res.writeHead(200, {
                         'Content-Type': 'image',
                             'Content-Length': (buffer) ?buffer.length : 0
                         });
-                        cache.set(coinName,buffer);
                     res.write(buffer);
-                    res.end();
-                });
-                element.dispose();
-                
-            } catch (error) {
-                console.log(error)
-            }            
-            await browser.close();
-            counter.decrement();
-        })();
-    }
-    else {
-        (async() => {
-            const buffer = await cache.get(coinName);
-            //fs.readFile(`${coinName}.jpg`, function (err, buffer) {
-                res.writeHead(200, {
-                    'Content-Type': 'image',
-                        'Content-Length': (buffer) ?buffer.length : 0
-                    });
-                res.write(buffer);
-                res.end(); 
-                //}); 
-            })();          
+                    res.end(); 
+                    //}); 
+                })();          
+            }
         }
-    }
     else{
         res.writeHead(200, {
             'Content-Type': 'image',
                 'Content-Length': 0
             });
-        res.end();
+    res.end();
     }
 }
 
