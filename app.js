@@ -5,6 +5,7 @@ const puppeteer = require('puppeteer');
 const jsdom = require("jsdom");
 const LRU = require('lru-cache');
 const coins = require('./CoinDescriptors');
+const counter = require('./counter.js')
 const { JSDOM } = jsdom;
 
 const port = process.env.PORT || 8080;
@@ -58,9 +59,11 @@ async function displayGrid(res) {
     res.end();
 }
 
-function displaycoin(res,coinName) {    
-        if (!cache.has(coinName)){
+function displaycoin(res,coinName) {
+if (counter.get() < 2){  
+    if (!cache.has(coinName)){
         (async() => {
+            counter.increment();
             const browser = await puppeteer.launch({
                 headless: true,
                 gpu: false,
@@ -96,7 +99,7 @@ function displaycoin(res,coinName) {
                     res.writeHead(200, {
                         'Content-Type': 'image',
                             'Content-Length': (buffer) ?buffer.length : 0
-                    });
+                        });
                     res.write(buffer);
                     res.end();
                 });
@@ -106,6 +109,7 @@ function displaycoin(res,coinName) {
                 console.log(error)
             }            
             await browser.close();
+            counter.decrement();
         })();
     }
     else {
@@ -114,13 +118,13 @@ function displaycoin(res,coinName) {
                 res.writeHead(200, {
                     'Content-Type': 'image',
                         'Content-Length': (buffer) ?buffer.length : 0
-                });
+                    });
                 res.write(buffer);
                 res.end(); 
-            }); 
-        })();          
+                }); 
+            })();          
+        }
     }
-    
 }
 server.listen(port);
 console.log(`server listening on ${port}`);
