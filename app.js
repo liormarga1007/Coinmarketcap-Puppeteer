@@ -226,7 +226,7 @@ function displaycoin(res,coinName) {
         if (!cache.has(coinName)){
         (async() => {
             const browser = await puppeteer.launch({
-                headless: false,
+                headless: true,
                 gpu: false,
                 scrollbars: false,
                 args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
