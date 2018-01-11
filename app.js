@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 
 const cache = LRU({
     max: 12 ,
-    maxAge: 1000 * 60*5 , // 5 minute
+    maxAge: 1000 * 60 , // 5 minute
     noDisposeOnSet: true,    
   });
 
