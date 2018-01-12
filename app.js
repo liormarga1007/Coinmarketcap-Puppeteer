@@ -83,7 +83,7 @@ function displaycoin(res,coinName) {
                         
                     }
                     
-                    await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)',{timeout:3000});
+                    await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(5)',{timeout:5000});
                     const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
                     const oldBoundingBox = await element.boundingBox();
                     oldBoundingBox.width= 700;
