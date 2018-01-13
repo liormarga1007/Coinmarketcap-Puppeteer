@@ -57,8 +57,8 @@ var server = http.createServer(async function (req, res) {
 async function displayGrid(res) {
     const newdom = await JSDOM.fromFile("coins.html")
     for (let i=0; i<coins.length; i++){  
-        newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("p"));
-        newdom.window.document.body.querySelectorAll('p')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price} USD`;
+        newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("h3"));
+        newdom.window.document.body.querySelectorAll('h3')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price} USD`;
         total = total + coins[i].price;
     }
     newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total} USD`;
@@ -72,7 +72,7 @@ async function coinsTotal(res) {
     for (let i=0; i<coins.length; i++){  
         total = total + coins[i].price;
     }       
-    res.write(`Total ${total.toString()} USD`);
+    res.write(`Total: ${total.toString()} USD`);
     res.end();
 }
 
@@ -134,7 +134,7 @@ function displaycoin(res,coinName) {
         }
         else {
             (async() => {
-                const buffer = await cache.get(coinName);
+                const buffer = await coins[coinName].buff;
                 //fs.readFile(`${coinName}.jpg`, function (err, buffer) {
                     res.writeHead(200, {
                         'Content-Type': 'image',
