@@ -37,7 +37,10 @@ var server = http.createServer(async function (req, res) {
         case 'pac':
         case 'eth':
         case 'bitcoin':
-            await displaycoin(res,coinname);
+            if (suffix=='.jpg')
+                await displaycoin(res,coinname);
+            if (suffix=='.json')
+                await displaydetailes(res,coinname);
             break;
         case 'favicon':
             res.writeHead(200, {
@@ -56,11 +59,11 @@ var server = http.createServer(async function (req, res) {
 
 async function displayGrid(res) {
     const newdom = await JSDOM.fromFile("coins.html")
-    for (let i=0; i<coins.length; i++){  
-        newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement("h3"));
-        newdom.window.document.body.querySelectorAll('h3')[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price} USD`;
+   /*  for (let i=0; i<coins.length; i++){  
+        newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement(`p${i}`));
+        newdom.window.document.body.querySelectorAll(`p${i}`)[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price} USD`;
         total = total + coins[i].price;
-    }
+    } */
     newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total} USD`;
     total =0;
     res.write(newdom.serialize());
@@ -73,6 +76,11 @@ async function coinsTotal(res) {
         total = total + coins[i].price;
     }       
     res.write(`Total: ${total.toString()} USD`);
+    res.end();
+}
+
+async function displaydetailes(res,coinName) {
+    res.write(JSON.stringify(coins[coinName]));
     res.end();
 }
 

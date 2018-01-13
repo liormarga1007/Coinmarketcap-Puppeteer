@@ -4,40 +4,40 @@
             <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
             <script>
                 var coins=[
-                        {   url:'/ripple.jpg',
-                            id:"#rippleImg"
+                        {   url:'/ripple',
+                            id:"#rippleImg",
                         },
-                        {   url: "/binance.jpg",
+                        {   url: "/binance",
                             id:"#binanceImg"
                         },
-                        {   url:"/cardano.jpg",
+                        {   url:"/cardano",
                             id:"#cardanoImg"
                         },
-                        {   url:'/tron.jpg',
+                        {   url:'/tron',
                             id:"#tronImg"
                         },
-                        {   url:'/funfair.jpg',
+                        {   url:'/funfair',
                             id:"#funfairImg"
                         },
-                        {   url:'/poe.jpg',
+                        {   url:'/poe',
                             id:"#poeImg"
                         },
-                        {   url:'/enj.jpg',
+                        {   url:'/enj',
                             id:"#enjImg"
                         },
-                        {   url:'/xlm.jpg',
+                        {   url:'/xlm',
                             id:"#xlmImg"
                         },
-                        {   url:'/xvg.jpg',
+                        {   url:'/xvg',
                             id:"#xvgImg"
                         },
-                        {   url:'/eth.jpg',
-                            id:"#ethImg"
-                        },
-                        {   url:'/pac.jpg',
+                        {   url:'/pac',
                             id:"#pacImg"
                         },
-                        {   url:'/bitcoin.jpg',
+                        {   url:'/eth',
+                            id:"#ethImg"
+                        },
+                        {   url:'/bitcoin',
                             id:"#bitcoinImg"
                         }
                     ];
@@ -45,16 +45,21 @@
                     for(let i=0 ;i<coins.length ;i++)
                     {
                         $.ajax({ 
-                            url : coins[i].url, 
+                            url : `${coins[i].url}.jpg`, 
                             cache: true,
                             processData : false,
                         }).always(function(){
-                            $(coins[i].id).attr("src", coins[i].url).fadeIn();
+                            $(coins[i].id).attr("src", `${coins[i].url}.jpg`).fadeIn();
+                        }); 
+                        $.get( `${coins[i].url}.json`, function( data ) {
+                            obj = JSON.parse(data);
+                            $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price: ${obj.price} USD`);                        
                         });  
                     }
                     $.get( "/total", function( data ) {
                         $( "h1" ).html(data);
                     });
+                   
                 },10000);
             
             </script>
@@ -85,39 +90,51 @@
             <div class="grid-container">
                 <div class="grid-item">
                     <img id="rippleImg" src='/ripple.jpg' alt="Ripple">
+                    <p></p>
                 </div>
                 <div class="grid-item">
                     <img id="binanceImg" src="/binance.jpg" alt="Binance">
+                    <p></p>
                 </div>
                 <div class="grid-item">
                     <img id="cardanoImg" src="/cardano.jpg" alt="Cardano">
+                    <p></p>
                 </div>  
                 <div class="grid-item">
                     <img id="tronImg" src='/tron.jpg' alt="Tron">
+                    <p></p>
                 </div>
                 <div class="grid-item">
                     <img id="funfairImg" src='/funfair.jpg' alt="Funfair">
+                    <p></p>
                 </div>
                 <div class="grid-item">
                     <img id="poeImg" src='/poe.jpg' alt="Poe">
+                    <p></p>
                 </div>  
                 <div class="grid-item">
                     <img id="enjImg" src='/enj.jpg' alt="Enj">
+                    <p></p>
                 </div> 
                 <div class="grid-item">
                     <img id="xlmImg" src='/xlm.jpg' alt="Xlm">
+                    <p></p>
                 </div> 
                 <div class="grid-item">
                     <img id="xvgImg" src='/xvg.jpg' alt="Xvg">
+                    <p></p>
                 </div> 
                 <div class="grid-item">
                     <img id="pacImg" src='/eth.jpg' alt="Pac">
+                    <p></p>
                 </div> 
                 <div class="grid-item">
                     <img id="ethImg" src='/pac.jpg' alt="Eth">
+                    <p></p>
                 </div> 
                 <div class="grid-item">
                     <img id="bitcoinImg" src='/bitcoin.jpg' alt="Bitcoin">
+                    <p></p>
                 </div> 
             </div>
     </body>
