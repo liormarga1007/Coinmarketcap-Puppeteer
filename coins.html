@@ -1,6 +1,63 @@
 <html>
     <html>
         <head>
+            <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+            <script>
+                var coins=[
+                        {   url:'/ripple.jpg',
+                            id:"#rippleImg"
+                        },
+                        {   url: "/binance.jpg",
+                            id:"#binanceImg"
+                        },
+                        {   url:"/cardano.jpg",
+                            id:"#cardanoImg"
+                        },
+                        {   url:'/tron.jpg',
+                            id:"#tronImg"
+                        },
+                        {   url:'/funfair.jpg',
+                            id:"#funfairImg"
+                        },
+                        {   url:'/poe.jpg',
+                            id:"#poeImg"
+                        },
+                        {   url:'/enj.jpg',
+                            id:"#enjImg"
+                        },
+                        {   url:'/xlm.jpg',
+                            id:"#xlmImg"
+                        },
+                        {   url:'/xvg.jpg',
+                            id:"#xvgImg"
+                        },
+                        {   url:'/eth.jpg',
+                            id:"#ethImg"
+                        },
+                        {   url:'/pac.jpg',
+                            id:"#pacImg"
+                        },
+                        {   url:'/bitcoin.jpg',
+                            id:"#bitcoinImg"
+                        }
+                    ];
+                setInterval(function(){
+                    for(let i=0 ;i<coins.length ;i++)
+                    {
+                        $.ajax({ 
+                            url : coins[i].url, 
+                            cache: true,
+                            processData : false,
+                        }).always(function(){
+                            $(coins[i].id).attr("src", coins[i].url).fadeIn();
+                        });  
+                    }
+                    $.get( "/total", function( data ) {
+                        $( "h1" ).html(data);
+                    });
+                },10000);
+            
+            </script>
             <style>
             .grid-container {
                 display: grid;
@@ -22,45 +79,45 @@
             </style>
         </head>
         <body>
-            <meta http-equiv="refresh" content="12">
-            <h1>Eitan is a Gay:</h1>
+            <!--<meta http-equiv="refresh" content="12">!-->
+            <h1 id=total>Eitan is a Gay:</h1>
             
             <div class="grid-container">
                 <div class="grid-item">
-                    <img src="/ripple.jpg" alt="Ripple">
+                    <img id="rippleImg" alt="Ripple">
                 </div>
                 <div class="grid-item">
-                    <img src="/binance.jpg" alt="Bitcoin">
+                    <img id="binanceImg" alt="Binance">
                 </div>
                 <div class="grid-item">
-                    <img src="/cardano.jpg" alt="Cardano">
+                    <img id="cardanoImg" alt="Cardano">
                 </div>  
                 <div class="grid-item">
-                    <img src="/tron.jpg" alt="Tron">
+                    <img id="tronImg" alt="Tron">
                 </div>
                 <div class="grid-item">
-                    <img src="/funfair.jpg" alt="Funfair">
+                    <img id="funfairImg" alt="Funfair">
                 </div>
                 <div class="grid-item">
-                    <img src="/poe.jpg" alt="Poe">
+                    <img id="poeImg" alt="Poe">
                 </div>  
                 <div class="grid-item">
-                    <img src="/enj.jpg" alt="Enj">
+                    <img id="enjImg" alt="Enj">
                 </div> 
                 <div class="grid-item">
-                    <img src="/xlm.jpg" alt="Xlm">
+                    <img id="xlmImg" alt="Xlm">
                 </div> 
                 <div class="grid-item">
-                    <img src="/xvg.jpg" alt="Xvg">
+                    <img id="xvgImg" alt="Xvg">
                 </div> 
                 <div class="grid-item">
-                    <img src="/pac.jpg" alt="Pac">
+                    <img id="pacImg" alt="Pac">
                 </div> 
                 <div class="grid-item">
-                    <img src="/eth.jpg" alt="Eth">
+                    <img id="ethImg" alt="Eth">
                 </div> 
                 <div class="grid-item">
-                    <img src="/bitcoin.jpg" alt="Bitcoin">
+                    <img id="bitcoinImg" alt="Bitcoin">
                 </div> 
             </div>
     </body>

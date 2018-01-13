@@ -22,7 +22,7 @@ const cache = LRU({
 let total = 0;
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|bitcoin|favicon)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|bitcoin|favicon|total)?\/?(.*)/i) || ['', '', ''];
     
     switch(coinname){
         case 'ripple':
@@ -45,7 +45,10 @@ var server = http.createServer(async function (req, res) {
                 'Content-Length': 0
             });
             res.end();
-            break;        
+            break;  
+        case 'total':
+            coinsTotal(res)
+            break;
         default: 
             displayGrid(res);            
     }
@@ -64,6 +67,16 @@ async function displayGrid(res) {
     res.end();
 }
 
+async function coinsTotal(res) {
+    let total=0;
+    for (let i=0; i<coins.length; i++){  
+        total = total + coins[i].price;
+    }       
+    res.write(`Total ${total.toString()} USD`);
+    res.end();
+}
+
+
 function displaycoin(res,coinName) {
     if (counter.get() < 2){  
         if (!cache.has(coinName)){
@@ -78,7 +91,7 @@ function displaycoin(res,coinName) {
                 const page = await browser.newPage();                        
                 try {                
                     try {                  
-                        await page.goto(coins[coinName].url,{timeout:1000});
+                        await page.goto(coins[coinName].url,{timeout:3000});
                     } catch (error) {
                         
                     }
@@ -94,7 +107,7 @@ function displaycoin(res,coinName) {
                     let pricestring= await innerText.jsonValue();
                     innerText.dispose();
                     
-                    console.log(pricestring)
+                    console.log(`${coinName}: ${pricestring}`)
                     pricestring = pricestring.replace(/\,/g,'');
                     const pricenumber = pricestring.match(/(\d[\d\.\,]*)/g)
                     
@@ -105,7 +118,8 @@ function displaycoin(res,coinName) {
                             'Content-Type': 'image',
                                 'Content-Length': (buffer) ?buffer.length : 0
                             });
-                            cache.set(coinName,buffer);
+                            cache.set(coinName,buffer,1000 * 60 *3);
+                            coins[coinName].buff= buffer;
                         res.write(buffer);
                         res.end();
                     });
@@ -134,7 +148,7 @@ function displaycoin(res,coinName) {
         }
     else{
         (async() => {
-            const buffer = await cache.get(coinName);
+            const buffer = await coins[coinName].buff;
             if (buffer== null){
                 res.writeHead(200, {
                     'Content-Type': 'image',
