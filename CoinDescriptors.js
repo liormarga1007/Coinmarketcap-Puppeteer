@@ -17,84 +17,96 @@ module.exports = [
         url: rippleURL,
         price:0,
         ammount:242,
-        buff: null
+        buff: null,
+        baseprice: 600
     },
     {
         name:'binance',
         url: binanceURL,
         price:0,
         ammount:68,
-        buff: null
+        buff: null,
+        baseprice: 1300
     },
     {
         name:'cardano',
         url: cardanoURL,
         price:0,
         ammount:1048,
-        buff: null
+        buff: null,
+        baseprice:800
     },
     {
         name:'tron',
         url: tronURL,
         price:0,
         ammount:4365,
-        buff: null
+        buff: null,
+        baseprice: 400
     },
     {
         name:'funfair',
         url: funfairURL,
         price:0,
         ammount:1299,
-        buff: null
+        buff: null,
+        baseprice: 150
     },
     {
         name:'poe',
         url: poeURL,
         price:0,
         ammount:800,
-        buff: null
+        buff: null,
+        baseprice: 150
     },
     {
         name:'enj',
         url: enjURL,
         price:0,
         ammount:400,
-        buff: null
+        buff: null,
+        baseprice: 150
     },
     {
         name:'xlm',
         url: xlmURL,
         price:0,
         ammount:440,
-        buff: null
+        buff: null,
+        baseprice: 350
     },
     {
         name:'xvg',
         url: xvgURL,
         price:0,
         ammount:509,
-        buff: null
+        buff: null,
+        baseprice: 150
     },
     {
         name:'pac',
         url: pacURL,
         price:0,
         ammount:206531,
-        buff: null
+        buff: null,
+        baseprice: 50
     },
     {
         name:'eth',
         url: ethURL,
         price:0,
         ammount:1.19528776,
-        buff: null
+        buff: null,
+        baseprice:1550
     },
     {
         name:'bitcoin',
         url: bitcoinURL,
         price:0,
         ammount:0.01595059,
-        buff: null
+        buff: null,
+        baseprice :350
     }              
 ]
 

@@ -53,11 +53,17 @@
                         }); 
                         $.get( `${coins[i].url}.json`, function( data ) {
                             obj = JSON.parse(data);
-                            $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price: ${obj.price} USD`);                        
+                            $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price: ${obj.price} USD`);                       
                         });  
                     }
                     $.get( "/total", function( data ) {
-                        $( "h1" ).html(data);
+                        console.log(100-100*(parseInt(data)/6000))
+                        if (parseInt(data) < 6000){
+                            $("h1").html(`Total: <mark class="red">\$${data}</mark> <font class=usd> USD</font> <mark class="red">(-${(100-100*(parseInt(data)/6000)).toFixed(2)}%)</mark>`);
+                        }
+                        else{
+                            $("h1").html(`Total: <mark class="green">${data}</mark> <font class=usd> USD</font> <mark class="green">(${(100*(parseInt(data)/6000)-100).toFixed(2)}%)</mark>`);
+                        }                         
                     });                   
                 };
 
@@ -65,23 +71,37 @@
             
             </script>
             <style>
-            .grid-container {
-                display: grid;
-                grid-gap: 30px;
-                grid-template-columns: repeat(auto-fit, minmax(700px,1fr));
-                grid-template-rows: repeat(6,120px);
-                background-color: #2196F3;
-                padding: 10px;
-            }
-            .grid-item {
-                background-color: rgba(255, 255, 255, 0.8);
-                border: 1px solid rgba(0, 0, 0, 0.8);
-                font-size: 20px;
-                text-align: center;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
+                .grid-container {
+                    display: grid;
+                    grid-gap: 10px;
+                    grid-template-columns: repeat(auto-fit, minmax(700px,1fr));
+                    grid-template-rows: repeat(6,120px);
+                    background-color: #2196F3;
+                    padding: 10px;
+                }
+                .grid-item {
+                    background-color: rgba(255, 255, 255, 0.8);
+                    border: 1px solid rgba(0, 0, 0, 0.8);
+                    font-size: 20px;
+                    text-align: center;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    font-style:italic;
+                }
+                font.usd{
+                    font-size: 20px;
+                    font-style:italic;
+                }
+                mark.red {
+                    color:#ff0000;
+                    background: none;
+                }
+
+                mark.green {
+                    color:#538b01;
+                    background: none;
+                }
             </style>
         </head>
         <body onload="getcoinsdata()">

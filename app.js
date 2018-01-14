@@ -67,10 +67,13 @@ async function displayGrid(res) {
 
 async function coinsTotal(res) {
     let total=0;
+    let basetotal= 0;
     for (let i=0; i<coins.length; i++){  
         total = total + coins[i].price;
-    }       
-    res.write(`Total: ${total.toString()} USD`);
+        basetotal = basetotal + coins[i].baseprice;
+    }   
+    console.log(basetotal)    
+    res.write(total.toString());
     res.end();
 }
 
