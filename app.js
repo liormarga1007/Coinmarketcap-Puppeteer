@@ -59,11 +59,6 @@ var server = http.createServer(async function (req, res) {
 
 async function displayGrid(res) {
     const newdom = await JSDOM.fromFile("coins.html")
-   /*  for (let i=0; i<coins.length; i++){  
-        newdom.window.document.body.querySelectorAll('div')[i+1].appendChild(newdom.window.document.createElement(`p${i}`));
-        newdom.window.document.body.querySelectorAll(`p${i}`)[i].innerHTML=`Supply: ${coins[i].ammount} Price: ${coins[i].price} USD`;
-        total = total + coins[i].price;
-    } */
     newdom.window.document.body.querySelectorAll('h1')[0].innerHTML=`Total: ${total} USD`;
     total =0;
     res.write(newdom.serialize());
@@ -142,16 +137,20 @@ function displaycoin(res,coinName) {
         }
         else {
             (async() => {
-                const buffer = await coins[coinName].buff;
-                //fs.readFile(`${coinName}.jpg`, function (err, buffer) {
+                const buffer = await coins[coinName].buff;                
                     res.writeHead(200, {
                         'Content-Type': 'image',
                             'Content-Length': (buffer) ?buffer.length : 0
                         });
                     res.write(buffer);
                     res.end(); 
-                    //}); 
                 })();          
+            }
+            if (cache.length == 12)
+            {
+                let name = coins[Math.floor(Math.random() * 12)].name;
+                console.log(`remove: ${name}`)
+                cache.del(name)
             }
         }
     else{
