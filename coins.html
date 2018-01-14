@@ -53,7 +53,7 @@
                         }); 
                         $.get( `${coins[i].url}.json`, function( data ) {
                             obj = JSON.parse(data);
-                            $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price: ${obj.price} USD`);                       
+                            $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: ${obj.price} / ${obj.baseprice} `);                       
                         });  
                     }
                     $.get( "/total", function( data ) {
@@ -75,7 +75,7 @@
                     display: grid;
                     grid-gap: 10px;
                     grid-template-columns: repeat(auto-fit, minmax(700px,1fr));
-                    grid-template-rows: repeat(6,120px);
+                    
                     background-color: #2196F3;
                     padding: 10px;
                 }
