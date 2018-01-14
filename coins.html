@@ -41,7 +41,7 @@
                             id:"#bitcoinImg"
                         }
                     ];
-                setInterval(function(){
+                function getcoinsdata(){
                     for(let i=0 ;i<coins.length ;i++)
                     {
                         $.ajax({ 
@@ -58,9 +58,10 @@
                     }
                     $.get( "/total", function( data ) {
                         $( "h1" ).html(data);
-                    });
-                   
-                },10000);
+                    });                   
+                };
+
+                setInterval(getcoinsdata,10000);
             
             </script>
             <style>
@@ -83,7 +84,7 @@
             }
             </style>
         </head>
-        <body>
+        <body onload="getcoinsdata()">
             <!--<meta http-equiv="refresh" content="12">!-->
             <h1 id=total>Eitan is a Gay:</h1>
             
