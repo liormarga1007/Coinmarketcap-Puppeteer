@@ -1,6 +1,7 @@
 <html>
     <html>
         <head>
+            <meta name="google-signin-client_id" content="763536643299-thmnuchkbk14ag2v172mstqupe07j8vv.apps.googleusercontent.com">
             <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
             <script>
                 var coins=[
@@ -54,15 +55,14 @@
                         $.get( `${coins[i].url}.json`, function( data ) {
                             obj = JSON.parse(data);
                             if (obj.price < obj.baseprice){
-                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: ${obj.price}/${obj.baseprice} <mark class="red">(-${(100-100*(obj.price/obj.baseprice)).toFixed(2)}%)</mark>`);
+                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: \$${obj.price}/\$${obj.baseprice} <mark class="red">(-${(100-100*(obj.price/obj.baseprice)).toFixed(2)}%)</mark>`);
                             }
                             else{
-                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: ${obj.price}/${obj.baseprice} <mark class="green">(${(100*(obj.price/obj.baseprice)-100).toFixed(2)}%)</mark>`);
+                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: \$${obj.price}/\$${obj.baseprice} <mark class="green">(${(100*(obj.price/obj.baseprice)-100).toFixed(2)}%)</mark>`);
                             }                      
                         });  
                     }
                     $.get( "/total", function( data ) {
-                        console.log(100-100*(parseInt(data)/6000))
                         if (parseInt(data) < 6000){
                             $("h1").html(`Total: <mark class="red">\$${data}</mark> <font class=usd> USD</font> <mark class="red">(-${(100-100*(parseInt(data)/6000)).toFixed(2)}%)</mark>`);
                         }
@@ -75,6 +75,15 @@
                 setInterval(getcoinsdata,10000);
             
             </script>
+
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-6734923488579203",
+                enable_page_level_ads: true
+              });
+            </script>
+
             <style>
                 .grid-container {
                     display: grid;
@@ -107,12 +116,41 @@
                     color:#538b01;
                     background: none;
                 }
+                #my-signin2 {
+                    position: absolute;
+                    right: 150px;
+                    top: 10px;
+                    display: block;
+                    height: 125px;
+                    width: 125px;
+                }
             </style>
         </head>
         <body onload="getcoinsdata()">
+            <div id="my-signin2"></div>
+            <script>
+                function onSuccess(googleUser) {
+                    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+                }
+                function onFailure(error) {
+                    console.log(error);
+                }
+                function renderButton() {
+                gapi.signin2.render('my-signin2', {
+                    'scope': 'profile email',
+                    'width': 240,
+                    'height': 50,
+                    'longtitle': true,
+                    'theme': 'dark',
+                    'onsuccess': onSuccess,
+                    'onfailure': onFailure
+                    });
+                }
+            </script>
+    
+            <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
             <!--<meta http-equiv="refresh" content="12">!-->
             <h1 id=total>Eitan is a Gay:</h1>
-            
             <div class="grid-container">
                 <div class="grid-item">
                     <img id="rippleImg" src='/ripple.jpg' alt="Ripple">
