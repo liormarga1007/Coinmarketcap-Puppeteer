@@ -45,13 +45,6 @@
                 function getcoinsdata(){
                     for(let i=0 ;i<coins.length ;i++)
                     {
-                        $.ajax({ 
-                            url : `${coins[i].url}.jpg`, 
-                            cache: true,
-                            processData : false,
-                        }).always(function(){
-                            $(coins[i].id).attr("src", `${coins[i].url}.jpg`).fadeIn();
-                        }); 
                         $.get( `${coins[i].url}.json`, function( data ) {
                             obj = JSON.parse(data);
                             if (obj.price < obj.baseprice){
@@ -60,7 +53,15 @@
                             else{
                                 $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: \$${obj.price}/\$${obj.baseprice} <mark class="green">(${(100*(obj.price/obj.baseprice)-100).toFixed(2)}%)</mark>`);
                             }                      
-                        });  
+                        }); 
+                        $.ajax({ 
+                            url : `${coins[i].url}.jpg`, 
+                            cache: true,
+                            processData : false,
+                        }).always(function(){
+                            $(coins[i].id).attr("src", `${coins[i].url}.jpg`).fadeIn();
+                        }); 
+                         
                     }
                     $.get( "/total", function( data ) {
                         if (parseInt(data) < 6000){
@@ -72,7 +73,7 @@
                     });                   
                 };
 
-                setInterval(getcoinsdata,10000);
+                setInterval(getcoinsdata,20000);
             
             </script>
 
@@ -153,7 +154,7 @@
             <h1 id=total>Eitan is a Gay:</h1>
             <div class="grid-container">
                 <div class="grid-item">
-                    <img id="rippleImg" src='/ripple.jpg' alt="Ripple">
+                    <img id="rippleImg" src="/ripple.jpg" alt="Ripple">
                     <p></p>
                 </div>
                 <div class="grid-item">

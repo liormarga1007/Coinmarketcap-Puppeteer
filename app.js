@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 
 const cache = LRU({
     max: 12 ,
-    maxAge: 1000 * 60 *3 , // 3 minute
+    maxAge: 1000 * 60 *60 , // 1 hour
     noDisposeOnSet: true,    
   });
 
@@ -78,6 +78,16 @@ async function coinsTotal(res) {
 }
 
 async function displaydetailes(res,coinName) {
+    coins[coinName].toJSON = function(){
+        let result ={};
+        for (let x in this){
+            if (x != "buff"){
+                result[x] = this[x]
+            }
+        }
+            
+            return result;
+    }        
     res.write(JSON.stringify(coins[coinName]));
     res.end();
 }
