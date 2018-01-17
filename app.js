@@ -116,7 +116,8 @@ function displaycoin(res,coinName) {
                     const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(5)');
                     
                     const oldBoundingBox = await element.boundingBox();
-                    oldBoundingBox.width= 700;
+                    oldBoundingBox.width= 600;
+                    oldBoundingBox.x =0;
 
 
                     const quote_price = await page.$$('#quote_price');
