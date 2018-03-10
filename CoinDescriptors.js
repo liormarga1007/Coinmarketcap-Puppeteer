@@ -88,7 +88,7 @@ module.exports = [
         name:'pac',
         url: pacURL,
         price:0,
-        ammount:206531,
+        ammount:206,
         buff: null,
         baseprice: 50
     },
