@@ -113,8 +113,8 @@ function displaycoin(res,coinName) {
                     }
                     await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.banner-alert-cookied.js-cookie-policy-banner > div.banner-alert-close > button > span');
                     await page.click('body > div.banner-alert.banner-alert-fixed-bottom.banner-alert-cookied.js-cookie-policy-banner > div.banner-alert-close > button > span');
-                    await page.waitForSelector('body > div.container > div > div.col-lg-10 > div:nth-child(4)',{timeout:5000});
-                    const element = await page.$('body > div.container > div > div.col-lg-10 > div:nth-child(4)');
+                    await page.waitForSelector('body > div.container.main-section > div > div.col-lg-10 > div:nth-child(4)',{timeout:5000});
+                    const element = await page.$('body > div.container.main-section > div > div.col-lg-10 > div:nth-child(4)');
                     
                     const oldBoundingBox = await element.boundingBox();
                     oldBoundingBox.width= 600;
