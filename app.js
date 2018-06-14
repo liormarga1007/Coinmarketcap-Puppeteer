@@ -94,7 +94,7 @@ async function displaydetailes(res,coinName) {
 
 
 function displaycoin(res,coinName) {
-    if (counter.get() < 2){  
+    if (counter.get() < 1){  
         if (!cache.has(coinName)){
             (async() => {
                 counter.increment();
