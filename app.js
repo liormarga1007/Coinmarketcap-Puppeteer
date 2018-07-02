@@ -117,7 +117,7 @@ function displaycoin(res,coinName) {
                     const element = await page.$('body > div.container.main-section > div > div.col-lg-10 > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container');
                     
                     const oldBoundingBox = await element.boundingBox();
-                    oldBoundingBox.width= 800;
+                    oldBoundingBox.width= 750;
                     oldBoundingBox.x =0;
 
 
