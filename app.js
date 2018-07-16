@@ -111,8 +111,8 @@ function displaycoin(res,coinName) {
                     } catch (error) {
                         
                     }
-                    await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner.flex-container > div.banner-alert-close > button > span');
-                    await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner.flex-container > div.banner-alert-close > button > span');
+                    await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
+                    await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
                     await page.waitForSelector('body > div.container.main-section > div > div.col-lg-10 > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container',{timeout:5000});
                     const element = await page.$('body > div.container.main-section > div > div.col-lg-10 > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container');
                     
