@@ -108,8 +108,8 @@ function displaycoin(res,coinName) {
                 try {                
                     try {                  
                         await page.goto(coins[coinName].url,{timeout:5000});
-                        await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
-                        await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
+                        await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button');
+                        await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button');
                     } catch (error) {
                         
                     }
