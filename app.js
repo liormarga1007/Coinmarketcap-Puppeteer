@@ -108,10 +108,10 @@ function displaycoin(res,coinName) {
                 try {                
                     try {                  
                         await page.goto(coins[coinName].url,{timeout:5000});
-                        await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button');
-                        await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button');
+                        await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
+                        await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
                     } catch (error) {
-                        
+                        console.log(error);
                     }
                     
                     await page.waitForSelector('body > div.container.main-section > div > div.col-lg-10 > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container',{timeout:5000});
