@@ -120,8 +120,8 @@ function displaycoin(res,coinName) {
                         console.log(error);
                     }
 
-                    await page.waitForSelector('body > div.container.main-section > div > div.col-xl-10.padding-top-1x > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container',{timeout:5000});
-                    const element = await page.$('body > div.container.main-section > div > div.col-xl-10.padding-top-1x > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container');
+                    await page.waitForSelector('body > div.container.main-section.padding-top-1x > div.cmc-main-content > div.cmc-main-content__main > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container',{timeout:5000});
+                    const element = await page.$('body > div.container.main-section.padding-top-1x > div.cmc-main-content > div.cmc-main-content__main > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container');
                     
                     const oldBoundingBox = await element.boundingBox();
                     oldBoundingBox.width= 750;
