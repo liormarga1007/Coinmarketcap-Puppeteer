@@ -146,6 +146,8 @@ function displaycoin(res,coinName) {
                             });
                             cache.set(coinName,buffer,1000 * 60 *3);
                             coins[coinName].buff= buffer;
+                            var d = new Date();
+                            coins[coinName].time = d.toLocaleTimeString();
                         res.write(buffer);
                         res.end();
                     });
@@ -169,7 +171,7 @@ function displaycoin(res,coinName) {
                     res.end(); 
                 })();          
             }
-            if (cache.length == 12)
+            if (cache.length  > 10)
             {
                 let name = coins[Math.floor(Math.random() * 12)].name;
                 console.log(`remove: ${name}`)

@@ -18,7 +18,8 @@ module.exports = [
         price:0,
         ammount:242,
         buff: null,
-        baseprice: 600
+        baseprice: 600,
+        time : 0
     },
     {
         name:'binance',
@@ -26,7 +27,8 @@ module.exports = [
         price:0,
         ammount:68,
         buff: null,
-        baseprice: 1300
+        baseprice: 1300,
+        time : 0
     },
     {
         name:'cardano',
@@ -34,7 +36,8 @@ module.exports = [
         price:0,
         ammount:1048,
         buff: null,
-        baseprice:800
+        baseprice:800,
+        time : 0
     },
     {
         name:'tron',
@@ -42,7 +45,8 @@ module.exports = [
         price:0,
         ammount:4365,
         buff: null,
-        baseprice: 400
+        baseprice: 400,
+        time : 0
     },
     {
         name:'funfair',
@@ -50,7 +54,8 @@ module.exports = [
         price:0,
         ammount:1299,
         buff: null,
-        baseprice: 150
+        baseprice: 150,
+        time : 0
     },
     {
         name:'poe',
@@ -58,7 +63,8 @@ module.exports = [
         price:0,
         ammount:800,
         buff: null,
-        baseprice: 150
+        baseprice: 150,
+        time : 0
     },
     {
         name:'enj',
@@ -66,7 +72,8 @@ module.exports = [
         price:0,
         ammount:400,
         buff: null,
-        baseprice: 150
+        baseprice: 150,
+        time : 0
     },
     {
         name:'xlm',
@@ -74,7 +81,8 @@ module.exports = [
         price:0,
         ammount:440,
         buff: null,
-        baseprice: 350
+        baseprice: 350,
+        time : 0
     },
     {
         name:'xvg',
@@ -82,7 +90,8 @@ module.exports = [
         price:0,
         ammount:509,
         buff: null,
-        baseprice: 150
+        baseprice: 150,
+        time : 0
     },
     {
         name:'pac',
@@ -90,7 +99,8 @@ module.exports = [
         price:0,
         ammount:206,
         buff: null,
-        baseprice: 50
+        baseprice: 50,
+        time : 0
     },
     {
         name:'eth',
@@ -98,7 +108,8 @@ module.exports = [
         price:0,
         ammount:1.19528776,
         buff: null,
-        baseprice:1550
+        baseprice:1550,
+        time : 0
     },
     {
         name:'bitcoin',
@@ -106,7 +117,8 @@ module.exports = [
         price:0,
         ammount:0.01595059,
         buff: null,
-        baseprice :350
+        baseprice :350,
+        time : 0
     }              
 ]
 

@@ -48,10 +48,10 @@
                         $.get( `${coins[i].url}.json`, function( data ) {
                             obj = JSON.parse(data);
                             if (obj.price < obj.baseprice){
-                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: \$${obj.price}/\$${obj.baseprice} <mark class="red">(-${(100-100*(obj.price/obj.baseprice)).toFixed(2)}%)</mark>`);
+                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: \$${obj.price}/\$${obj.baseprice} <mark class="red">(-${(100-100*(obj.price/obj.baseprice)).toFixed(2)}%)</mark> time: ${obj.time}`);
                             }
                             else{
-                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: \$${obj.price}/\$${obj.baseprice} <mark class="green">(${(100*(obj.price/obj.baseprice)-100).toFixed(2)}%)</mark>`);
+                                $(`p:eq(${i})`).html(`Supply: ${obj.ammount} Price/Base: \$${obj.price}/\$${obj.baseprice} <mark class="green">(${(100*(obj.price/obj.baseprice)-100).toFixed(2)}%)</mark> time: ${obj.time}`);
                             }                      
                         }); 
                         $.ajax({ 
