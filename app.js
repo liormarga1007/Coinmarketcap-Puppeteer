@@ -52,6 +52,8 @@ var server = http.createServer(async function (req, res) {
         case 'total':
             coinsTotal(res)
             break;
+        case 'clear':
+            cache.reset();
         default: 
             displayGrid(res);            
     }
