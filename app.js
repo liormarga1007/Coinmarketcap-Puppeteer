@@ -22,7 +22,7 @@ const cache = LRU({
 let total = 0;
 
 var server = http.createServer(async function (req, res) {
-    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|bitcoin|favicon|total)?\/?(.*)/i) || ['', '', ''];
+    const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|bitcoin|favicon|total|clear)?\/?(.*)/i) || ['', '', ''];
     
     switch(coinname){
         case 'ripple':
@@ -74,7 +74,7 @@ async function coinsTotal(res) {
         total = total + coins[i].price;
         basetotal = basetotal + coins[i].baseprice;
     }   
-    console.log(basetotal)    
+    console.log(`total:${basetotal}`)    
     res.write(total.toString());
     res.end();
 }
@@ -111,15 +111,15 @@ function displaycoin(res,coinName) {
                     try {                  
                         await page.goto(coins[coinName].url,{timeout:3000});
                     } catch (error) {
-                        console.log(error);
+                        console.log(`goto:${error}`);
                     }
                     
                     try {
-                        await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
+                        await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span',{timeout:2000});
                         await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
                     }
                     catch (error) {
-                        console.log(error);
+                        console.log(`cookie:${error}`);
                     }
 
                     await page.waitForSelector('body > div.container.main-section.padding-top-1x > div.cmc-main-content > div.cmc-main-content__main > div.details-panel.flex-container.bottom-margin-2x > div.details-panel-item--header.flex-container',{timeout:5000});
@@ -156,7 +156,7 @@ function displaycoin(res,coinName) {
                     element.dispose();
                     
                 } catch (error) {
-                    console.log(error)
+                    console.log(`general:${error}`)
                 }            
                 await browser.close();
                 counter.decrement();
@@ -181,6 +181,7 @@ function displaycoin(res,coinName) {
             }
         }
     else{
+        if (counter.get() > 2) console.log(`counter: ${counter.get()}`);
         (async() => {
             const buffer = await coins[coinName].buff;
             if (buffer== null){
