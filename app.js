@@ -54,6 +54,9 @@ var server = http.createServer(async function (req, res) {
             break;
         case 'clear':
             cache.reset();
+            if (counter.get() > 0){
+                counter.decrement();
+            }
         default: 
             displayGrid(res);            
     }
