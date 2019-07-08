@@ -18,7 +18,7 @@ module.exports = [
         price:0,
         ammount:242,
         buff: null,
-        baseprice: 600,
+        baseprice: 610,
         time : 0
     },
     {
@@ -27,7 +27,7 @@ module.exports = [
         price:0,
         ammount:68,
         buff: null,
-        baseprice: 1300,
+        baseprice: 1310,
         time : 0
     },
     {
@@ -36,7 +36,7 @@ module.exports = [
         price:0,
         ammount:1048,
         buff: null,
-        baseprice:800,
+        baseprice:810,
         time : 0
     },
     {
@@ -108,7 +108,7 @@ module.exports = [
         price:0,
         ammount:1.19528776,
         buff: null,
-        baseprice:1550,
+        baseprice:1560,
         time : 0
     },
     {
@@ -117,7 +117,7 @@ module.exports = [
         price:0,
         ammount:0.01595059,
         buff: null,
-        baseprice :350,
+        baseprice :310,
         time : 0
     }              
 ]
