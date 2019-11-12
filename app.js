@@ -118,8 +118,8 @@ function displaycoin(res,coinName) {
                     }
                     
                     try {
-                        await page.waitForSelector('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span',{timeout:2000});
-                        await page.click('body > div.banner-alert.banner-alert-fixed-bottom.js-cookie-policy-banner > div.banner-alert-close > button > span');
+                        await page.waitForSelector('#cmc-cookie-policy-banner > div.cmc-cookie-policy-banner__close',{timeout:2000});
+                        await page.click('#cmc-cookie-policy-banner > div.cmc-cookie-policy-banner__close');
                     }
                     catch (error) {
                         console.log(`cookie:${error}`);
@@ -133,8 +133,9 @@ function displaycoin(res,coinName) {
                     oldBoundingBox.x =0;
 
 
-                    const quote_price = await page.$$('#quote_price');
-                    const innerText = await quote_price[0].getProperty('innerText')
+                    const quote_price = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div > div.cmc-details-panel-price.jta9t4-0.fcilTk > span:nth-child(1) > span.cmc-details-panel-price__price');
+                    
+                    const innerText = await quote_price.getProperty('innerText')
                     let pricestring= await innerText.jsonValue();
                     innerText.dispose();
                     
