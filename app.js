@@ -104,7 +104,7 @@ function displaycoin(res,coinName) {
             (async() => {
                 counter.increment();
                 const browser = await puppeteer.launch({
-                    headless: true,
+                    headless: false,
                     gpu: false,
                     scrollbars: false,
                     args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
@@ -124,16 +124,18 @@ function displaycoin(res,coinName) {
                     catch (error) {
                         console.log(`cookie:${error}`);
                     }
+                    await page.waitForSelector('#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.jvxWIy.cmc-currencies > div.cmc-currencies__details-panel > div')
+                    const element = await page.$('#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.jvxWIy.cmc-currencies > div.cmc-currencies__details-panel > div')
 
-                    await page.waitForSelector('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div',{timeout:5000});
-                    const element = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div');
+                    //await page.waitForSelector('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div',{timeout:5000});
+                    //const element = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div');
                     
                     const oldBoundingBox = await element.boundingBox();
                     oldBoundingBox.width= 750;
                     oldBoundingBox.x =0;
 
-
-                    const quote_price = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div > div.cmc-details-panel-price.jta9t4-0.fcilTk > span:nth-child(1) > span.cmc-details-panel-price__price');
+                    const quote_price = await page.$('#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.jvxWIy.cmc-currencies > div.cmc-currencies__details-panel > div > div.f6l7tu-0.cdygDb.cmc-details-panel-price > span:nth-child(1) > span.cmc-details-panel-price__price')
+                    //const quote_price = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div > div.cmc-details-panel-price.jta9t4-0.fcilTk > span:nth-child(1) > span.cmc-details-panel-price__price');
                     
                     const innerText = await quote_price.getProperty('innerText')
                     let pricestring= await innerText.jsonValue();
