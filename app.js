@@ -114,7 +114,7 @@ function displaycoin(res,coinName) {
                     try {                  
                         await page.goto(coins[coinName].url,{timeout:3000});
                     } catch (error) {
-                        console.log(`goto:${error}`);
+                        console.log(`goto:${error} ${coins[coinName].url}`);
                     }
                     
                     try {
