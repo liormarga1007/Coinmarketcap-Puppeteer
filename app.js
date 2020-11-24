@@ -125,7 +125,7 @@ function displaycoin(res,coinName) {
                         console.log(`cookie:${error}`);
                     }
                     var select;
-                    if (coinName.includes("FunFair"){
+                    if (coinName.includes("funfair"){
                         select = '#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.jvxWIy.cmc-currencies > div.cmc-currencies__details-panel > div.sc-2kchuj-0.bMKXnN.cmc-details-panel-header'
                     }
                     else{
