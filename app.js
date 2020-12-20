@@ -131,7 +131,10 @@ function displaycoin(res,coinName) {
                     else{
                         select = '#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.cGWhRg.cmc-currencies > div.cmc-currencies__details-panel > div'
                     }
-                        
+                      
+                    if (coinName.includes("enj")){
+                        select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.jPrNDN.priceSection___3kA4m'
+                    }
                     await page.waitForSelector(`${select}`)
           
                     const element = await page.$(`${select}`)
@@ -143,8 +146,13 @@ function displaycoin(res,coinName) {
                     oldBoundingBox.width= 750;
                     oldBoundingBox.x =0;
 
-                    const quote_price = await page.$('#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.cGWhRg.cmc-currencies > div.cmc-currencies__details-panel > div > div.f6l7tu-0.jGlJVl.cmc-details-panel-price > span:nth-child(1) > span.cmc-details-panel-price__price')
-                    //const quote_price = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div > div.cmc-details-panel-price.jta9t4-0.fcilTk > span:nth-child(1) > span.cmc-details-panel-price__price');
+                    let quote_price;
+                    if (coinName.includes("enj")){
+                        quote_price = await page.$('#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.jPrNDN.priceSection___3kA4m > div.sc-16r8icm-0.kXPxnI.priceTitle___1cXUG > div')
+                    }
+                    else{
+                        quote_price = await page.$('#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.cGWhRg.cmc-currencies > div.cmc-currencies__details-panel > div > div.f6l7tu-0.jGlJVl.cmc-details-panel-price > span:nth-child(1) > span.cmc-details-panel-price__price')
+                    }//const quote_price = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div > div.cmc-details-panel-price.jta9t4-0.fcilTk > span:nth-child(1) > span.cmc-details-panel-price__price');
                     
                     const innerText = await quote_price.getProperty('innerText')
                     let pricestring= await innerText.jsonValue();
