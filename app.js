@@ -125,17 +125,17 @@ function displaycoin(res,coinName) {
                         console.log(`cookie:${error}`);
                     }
                     let select;
-                    if (coinName.includes("funfair")){
-                        select = '#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.cGWhRg.cmc-currencies > div.cmc-currencies__details-panel > div.sc-2kchuj-0.bMKXnN.cmc-details-panel-header'
-                    }
-                    else{
+                    //if (coinName.includes("funfair")){
+                    //    select = '#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.cGWhRg.cmc-currencies > div.cmc-currencies__details-panel > div.sc-2kchuj-0.bMKXnN.cmc-details-panel-header'
+                    //}
+                    //else{
                         select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m'
                         //select = '#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.cGWhRg.cmc-currencies > div.cmc-currencies__details-panel > div'
-                    }
+                    //}
                       
-                    if (coinName.includes("enj")){
-                        select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m'
-                    }
+                    //if (coinName.includes("enj")){
+                    //    select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m'
+                    //}
                     await page.waitForSelector(`${select}`)
           
                     const element = await page.$(`${select}`)
@@ -144,7 +144,7 @@ function displaycoin(res,coinName) {
                     //const element = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div');
                     
                     const oldBoundingBox = await element.boundingBox();
-                    oldBoundingBox.width= 750;
+                    oldBoundingBox.width= 900;
                     oldBoundingBox.x =0;
 
                     let quote_price;
