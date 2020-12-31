@@ -99,7 +99,7 @@ async function displaydetailes(res,coinName) {
 
 
 function displaycoin(res,coinName) {
-    if (counter.get() < 2){  
+    if (counter.get() < 1){  
         if (!cache.has(coinName)){
             (async() => {
                 counter.increment();
@@ -117,13 +117,13 @@ function displaycoin(res,coinName) {
                         console.log(`goto:${error} ${coins[coinName].url}`);
                     }
                     
-                    try {
-                        await page.waitForSelector('#cmc-cookie-policy-banner > div.cmc-cookie-policy-banner__close',{timeout:2000});
-                        await page.click('#cmc-cookie-policy-banner > div.cmc-cookie-policy-banner__close');
-                    }
-                    catch (error) {
-                        console.log(`cookie:${error}`);
-                    }
+                    //try {
+                        //await page.waitForSelector('#cmc-cookie-policy-banner > div.cmc-cookie-policy-banner__close',{timeout:2000});
+                        //await page.click('#cmc-cookie-policy-banner > div.cmc-cookie-policy-banner__close');
+                    //}
+                    //catch (error) {
+                        //console.log(`cookie:${error}`);
+                    //}
                     let select;
                     //if (coinName.includes("funfair")){
                     //    select = '#__next > div.sc-1mezg3x-0.fHFmDM.cmc-app-wrapper.cmc-app-wrapper--env-prod.cmc-theme--day > div.container.cmc-main-section > div.cmc-main-section__content > div.aiq2zi-0.cGWhRg.cmc-currencies > div.cmc-currencies__details-panel > div.sc-2kchuj-0.bMKXnN.cmc-details-panel-header'
