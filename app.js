@@ -103,6 +103,7 @@ function displaycoin(res,coinName) {
         if (!cache.has(coinName)){
             (async() => {
                 counter.increment();
+                console.log(`counter: ${counter.get()}`)
                 const browser = await puppeteer.launch({
                     headless: true,
                     gpu: false,
@@ -184,6 +185,7 @@ function displaycoin(res,coinName) {
                 }            
                 await browser.close();
                 counter.decrement();
+                console.log(`counter: ${counter.get()}`)
                 })();
         }
         else {
