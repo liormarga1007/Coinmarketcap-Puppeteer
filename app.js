@@ -197,7 +197,8 @@ function displaycoin(res,coinName) {
                     res.end(); 
                 })();          
             }
-            if (cache.length  > 10)
+            console.log(`cachelength: ${cache.length}`);
+            if (cache.length  > 8)
             {
                 let name = coins[Math.floor(Math.random() * 12)].name;
                 console.log(`remove: ${name}`)
