@@ -77,7 +77,7 @@ async function coinsTotal(res) {
         total = total + coins[i].price;
         basetotal = basetotal + coins[i].baseprice;
     }   
-    console.log(`total:${basetotal}`)    
+    console.log(`totalcounter:${counter.get()}`)    
     res.write(total.toString());
     res.end();
 }
@@ -205,7 +205,7 @@ function displaycoin(res,coinName) {
             }
         }
     else{
-        if (counter.get() > 2) console.log(`counter: ${counter.get()}`);
+        if (counter.get() > 1) console.log(`counter: ${counter.get()}`);
         (async() => {
             const buffer = await coins[coinName].buff;
             if (buffer== null){
