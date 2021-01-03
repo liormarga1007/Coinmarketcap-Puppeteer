@@ -99,7 +99,7 @@ async function displaydetailes(res,coinName) {
 
 
 function displaycoin(res,coinName) {
-    if (counter.get() < 1){  
+    if (counter.get() < 2){  
         if (!cache.has(coinName)){
             (async() => {
                 counter.increment();
@@ -200,7 +200,7 @@ function displaycoin(res,coinName) {
                 })();          
             }
             console.log(`cachelength: ${cache.length}`);
-            if (cache.length  > 8)
+            if (cache.length  > 10)
             {
                 let name = coins[Math.floor(Math.random() * 12)].name;
                 console.log(`remove: ${name}`)
@@ -208,7 +208,7 @@ function displaycoin(res,coinName) {
             }
         }
     else{
-        if (counter.get() > 1) console.log(`counter: ${counter.get()}`);
+        if (counter.get() > 2) console.log(`counter: ${counter.get()}`);
         (async() => {
             const buffer = await coins[coinName].buff;
             if (buffer== null){
