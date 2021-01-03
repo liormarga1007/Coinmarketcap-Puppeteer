@@ -77,7 +77,7 @@ async function coinsTotal(res) {
         total = total + coins[i].price;
         basetotal = basetotal + coins[i].baseprice;
     }   
-    console.log(`totalcounter:${counter.get()}`)    
+    //console.log(`totalcounter:${counter.get()}`)    
     res.write(total.toString());
     res.end();
 }
@@ -182,9 +182,9 @@ function displaycoin(res,coinName) {
                     
                 } catch (error) {
                     console.log(`general:${error}`)
-                }            
-                await browser.close();
+                }   
                 counter.decrement();
+                await browser.close();
                 console.log(`counter: ${counter.get()}`)
                 })();
         }
