@@ -123,7 +123,7 @@ function displaycoin(res,coinName) {
                         scrollbars: false,
                         args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
                     });
-                    browser1 = browser;
+                    //browser1 = browser;
                     page = await browser.newPage();    
                 }
                 catch(err){                    
