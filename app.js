@@ -105,6 +105,9 @@ function displaycoin(res,coinName) {
     var nowseconds = new Date().getTime() / 1000;
     if ((nowseconds - seconds) > 120){
         console.log("stuck")
+        if (counter.get() > 0){
+                counter.decrement();
+        }
         //await browser1.close();
         //crash = 1;
     }
