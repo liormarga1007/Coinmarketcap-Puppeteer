@@ -116,13 +116,13 @@ function displaycoin(res,coinName) {
                     });
                     page = await browser.newPage();    
                 }
-                catch(err){
-                    counter.decrement();
+                catch(err){                    
                     console.log(err)
                     console.log(`counter decrement err: ${counter.get()}`)
                     if (browser != null){
                         await browser.close();
                     }
+                    counter.decrement();
                     return;
                 }
                 try{                
@@ -159,8 +159,17 @@ function displaycoin(res,coinName) {
                     //const element = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div');
                     
                     const oldBoundingBox = await element.boundingBox();
-                    oldBoundingBox.width= 900;
-                    oldBoundingBox.x =0;
+                    if (oldBoundingBox != null){
+                        oldBoundingBox.width= 900;
+                        oldBoundingBox.x =0;
+                    }
+                    else{
+                        
+                        await browser.close(); 
+                        counter.decrement();
+                        return;
+                    }
+                    
 
                     let quote_price;
                     //if (coinName.includes("enj")){
