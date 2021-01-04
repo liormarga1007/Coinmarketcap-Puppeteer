@@ -20,6 +20,7 @@ const cache = LRU({
 
 
 let total = 0;
+var seconds = new Date().getTime() / 1000;
 
 var server = http.createServer(async function (req, res) {
     const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|bitcoin|favicon|total|clear)?\/?(.*)/i) || ['', '', ''];
@@ -100,9 +101,16 @@ async function displaydetailes(res,coinName) {
 
 function displaycoin(res,coinName) {
     //console.log(`counter before: ${counter.get()}`)
+    var nowseconds = new Date().getTime() / 1000;
+    if ((nowseconds - seconds) > 120){
+        console.log("stuck")
+        const crash = null;
+        crash = 1;
+    }
     if (counter.get() < 2){  
         if (!cache.has(coinName)){
             (async() => {
+                seconds = new Date().getTime() / 1000;
                 counter.increment();
                 console.log(`counter increment: ${counter.get()}`)
                 let browser =null;
