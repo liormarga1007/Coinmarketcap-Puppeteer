@@ -112,8 +112,13 @@ function displaycoin(res,coinName) {
                         scrollbars: false,
                         args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
                     });
-                    const page = await browser.newPage();                        
-                                
+                    const page = await browser.newPage();    
+                }
+                catch(err){
+                    counter.decrement();
+                    return;
+                }
+                try{                
                     try {                  
                         await page.goto(coins[coinName].url,{timeout:3000});
                     } catch (error) {
