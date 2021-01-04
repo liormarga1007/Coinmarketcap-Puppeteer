@@ -1,4 +1,4 @@
-const rippleURL= 'https://coinmarketcap.com/currencies/ripple/';
+const rippleURL= 'https://coinmarketcap.com/currencies/xrp/';
 const binanceURL='https://coinmarketcap.com/currencies/binance-coin/';
 const cardanoURL = 'https://coinmarketcap.com/currencies/cardano/';
 const tronURL = 'https://coinmarketcap.com/currencies/tron/';
