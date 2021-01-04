@@ -118,6 +118,7 @@ function displaycoin(res,coinName) {
                 }
                 catch(err){
                     counter.decrement();
+                    console.log(err)
                     console.log(`counter decrement err: ${counter.get()}`)
                     return;
                 }
