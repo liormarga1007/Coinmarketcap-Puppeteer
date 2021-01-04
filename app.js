@@ -105,17 +105,20 @@ function displaycoin(res,coinName) {
             (async() => {
                 counter.increment();
                 console.log(`counter increment: ${counter.get()}`)
+                const browser =null;
+                const page =null;
                 try {
-                    const browser = await puppeteer.launch({
+                    browser = await puppeteer.launch({
                         headless: true,
                         gpu: false,
                         scrollbars: false,
                         args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
                     });
-                    const page = await browser.newPage();    
+                    page = await browser.newPage();    
                 }
                 catch(err){
                     counter.decrement();
+                    console.log(`counter decrement err: ${counter.get()}`)
                     return;
                 }
                 try{                
