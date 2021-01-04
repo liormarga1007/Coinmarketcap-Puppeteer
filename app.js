@@ -21,6 +21,7 @@ const cache = LRU({
 
 let total = 0;
 var seconds = new Date().getTime() / 1000;
+var browser1 = null;
 
 var server = http.createServer(async function (req, res) {
     const [_, coinname, suffix] = req.url.match(/^\/(ripple|binance|cardano|tron|funfair|poe|enj|xlm|xvg|pac|eth|bitcoin|favicon|total|clear)?\/?(.*)/i) || ['', '', ''];
@@ -104,8 +105,8 @@ function displaycoin(res,coinName) {
     var nowseconds = new Date().getTime() / 1000;
     if ((nowseconds - seconds) > 120){
         console.log("stuck")
-        const crash = null;
-        crash = 1;
+        await browser.close();
+        //crash = 1;
     }
     if (counter.get() < 2){  
         if (!cache.has(coinName)){
@@ -122,6 +123,7 @@ function displaycoin(res,coinName) {
                         scrollbars: false,
                         args: ['--reduce-security-for-testing', '--deterministic-fetch', `–-process-per-site` ,'--no-sandbox', '--disable-setuid-sandbox' ]
                     });
+                    browser1 = browser;
                     page = await browser.newPage();    
                 }
                 catch(err){                    
