@@ -99,7 +99,7 @@ async function displaydetailes(res,coinName) {
 
 
 function displaycoin(res,coinName) {
-    console.log(`counter before: ${counter.get()}`)
+    //console.log(`counter before: ${counter.get()}`)
     if (counter.get() < 2){  
         if (!cache.has(coinName)){
             (async() => {
