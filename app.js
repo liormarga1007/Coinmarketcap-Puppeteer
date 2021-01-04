@@ -105,8 +105,8 @@ function displaycoin(res,coinName) {
             (async() => {
                 counter.increment();
                 console.log(`counter increment: ${counter.get()}`)
-                const browser =null;
-                const page =null;
+                let browser =null;
+                let page =null;
                 try {
                     browser = await puppeteer.launch({
                         headless: true,
