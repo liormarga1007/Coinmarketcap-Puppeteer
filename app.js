@@ -132,6 +132,7 @@ function displaycoin(res,coinName) {
                 catch(err){                    
                     console.log(err)
                     console.log(`counter decrement err: ${counter.get()}`)
+                    process.exit(1)
                     if (browser != null){
                         await browser.close();
                     }
