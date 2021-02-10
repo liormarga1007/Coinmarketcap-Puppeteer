@@ -25,7 +25,7 @@ module.exports = [
         name:'binance',
         url: binanceURL,
         price:0,
-        ammount:68,
+        ammount:67.922,
         buff: null,
         baseprice: 1310,
         time : 0
@@ -34,7 +34,7 @@ module.exports = [
         name:'cardano',
         url: cardanoURL,
         price:0,
-        ammount:1048,
+        ammount:1048.3,
         buff: null,
         baseprice:810,
         time : 0
@@ -43,7 +43,7 @@ module.exports = [
         name:'tron',
         url: tronURL,
         price:0,
-        ammount:4365,
+        ammount:3459,
         buff: null,
         baseprice: 400,
         time : 0
@@ -52,7 +52,7 @@ module.exports = [
         name:'funfair',
         url: funfairURL,
         price:0,
-        ammount:1299,
+        ammount:938.72,
         buff: null,
         baseprice: 150,
         time : 0
@@ -70,7 +70,7 @@ module.exports = [
         name:'enj',
         url: enjURL,
         price:0,
-        ammount:400,
+        ammount:379.6,
         buff: null,
         baseprice: 150,
         time : 0
@@ -79,7 +79,7 @@ module.exports = [
         name:'xlm',
         url: xlmURL,
         price:0,
-        ammount:440,
+        ammount:444.4,
         buff: null,
         baseprice: 350,
         time : 0
@@ -88,7 +88,7 @@ module.exports = [
         name:'xvg',
         url: xvgURL,
         price:0,
-        ammount:509,
+        ammount:370.33,
         buff: null,
         baseprice: 150,
         time : 0
@@ -106,7 +106,7 @@ module.exports = [
         name:'eth',
         url: ethURL,
         price:0,
-        ammount:1.19528776,
+        ammount:1.19524076,
         buff: null,
         baseprice:1560,
         time : 0
