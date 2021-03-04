@@ -148,7 +148,7 @@ function displaycoin(res,coinName) {
                                        
                     let select;
                    
-                    select = #__next > div > div.sc-fzqARJ.eLpUJW.cmc-body-wrapper > div > div.sc-AxhCb.jGVDnv.container > div.sc-AxhCb.bYwLMj.container___lbFzk
+                    select = '#__next > div > div.sc-fzqARJ.eLpUJW.cmc-body-wrapper > div > div.sc-AxhCb.jGVDnv.container > div.sc-AxhCb.bYwLMj.container___lbFzk'
                     //select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m'
                                            
                     await page.waitForSelector(`${select}`)
