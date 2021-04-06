@@ -7,7 +7,7 @@ const poeURL = 'https://coinmarketcap.com/currencies/poet/';
 const enjURL = 'https://coinmarketcap.com/currencies/enjin-coin/';
 const xlmURL = 'https://coinmarketcap.com/currencies/stellar/';
 const xvgURL = 'https://coinmarketcap.com/currencies/verge/';
-const pacURL = 'https://coinmarketcap.com/currencies/pac-global/';
+const pacURL = 'https://coinmarketcap.com/currencies/pac-protocol/';
 const ethURL = 'https://coinmarketcap.com/currencies/ethereum/';
 const bitcoinURL = 'https://coinmarketcap.com/currencies/bitcoin/';
 
