@@ -145,7 +145,12 @@ function displaycoin(res,coinName) {
                     } catch (error) {
                         console.log(`goto:${error} ${coins[coinName].url}`);
                     }
-                                       
+                    try {                  
+                        await page.click(`#cmc-cookie-policy-banner > div.cmc-cookie-policy-banner__close`);
+                    } catch (error) {
+                        
+                    }
+                     
                     let select;
                      
                     select = '#__next > div > div.sc-fznJRM.bTIjTR.cmc-body-wrapper > div > div.sc-AxjAm.cYDKsE.container > div.sc-AxjAm.gTzmEg.container___lbFzk'
