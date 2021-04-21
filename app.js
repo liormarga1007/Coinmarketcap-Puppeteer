@@ -166,7 +166,7 @@ function displaycoin(res,coinName) {
                     const oldBoundingBox = await element.boundingBox();
                     if (oldBoundingBox != null){
                         oldBoundingBox.width= 900;
-                        oldBoundingBox.height= 600;
+                        oldBoundingBox.height= 500;
                         oldBoundingBox.x =0;
                     }
                     else{
