@@ -5,7 +5,8 @@ const puppeteer = require('puppeteer');
 const jsdom = require("jsdom");
 const LRU = require('lru-cache');
 const coins = require('./CoinDescriptors');
-const counter = require('./counter.js')
+const counter = require('./counter.js');
+const { deflate } = require('zlib');
 const { JSDOM } = jsdom;
 
 const port = process.env.PORT || 8080;
@@ -139,9 +140,18 @@ function displaycoin(res,coinName) {
                     counter.decrement();
                     return;
                 }
-                try{                
+                try{   
+                    //await navigationPromise
+                    function delay(time) {
+                        return new Promise(function(resolve) { 
+                            setTimeout(resolve, time)
+                        });
+                    } 
+
                     try {                  
-                        await page.goto(coins[coinName].url,{timeout:3000});
+                        await page.goto(coins[coinName].url);
+                        await delay(1000)
+                        await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
                     } catch (error) {
                         console.log(`goto:${error} ${coins[coinName].url}`);
                     }
@@ -155,14 +165,16 @@ function displaycoin(res,coinName) {
                      
                     select = '#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk'
                     //select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m'
-                                           
+                    await page.click('#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m > div.sc-16r8icm-0.kXPxnI.priceTitle___1cXUG');                                       
                     await page.waitForSelector(`${select}`)
-          
+                    
+                    await delay(5000)
                     const element = await page.$(`${select}`)
-
+                    
                     //await page.waitForSelector('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div',{timeout:5000});
                     //const element = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div');
-                    
+                    await page.click('#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m > div.sc-16r8icm-0.kXPxnI.priceTitle___1cXUG');                                       
+
                     const oldBoundingBox = await element.boundingBox();
                     if (oldBoundingBox != null){
                         oldBoundingBox.width= 900;
@@ -178,7 +190,7 @@ function displaycoin(res,coinName) {
                     
 
                     let quote_price;
-
+                    
                     quote_price = await page.$('#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m > div.sc-16r8icm-0.kXPxnI.priceTitle___1cXUG > div')
                     //quote_price = await page.$('#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk')
                   
