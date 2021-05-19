@@ -163,7 +163,8 @@ function displaycoin(res,coinName) {
                      
                     let select;
                      
-                    select = '#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk'
+                    select = '#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.epyToK.container > div.sc-16r8icm-0.dOJIkS.container___lbFzk`
+'
                     //select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m'
                     await page.click('#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m > div.sc-16r8icm-0.kXPxnI.priceTitle___1cXUG');                                       
                     await page.waitForSelector(`${select}`)
@@ -191,7 +192,7 @@ function displaycoin(res,coinName) {
 
                     let quote_price;
                     
-                    quote_price = await page.$('#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m > div.sc-16r8icm-0.kXPxnI.priceTitle___1cXUG > div')
+                    quote_price = await page.$('#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.epyToK.container > div.sc-16r8icm-0.dOJIkS.container___lbFzk > div.sc-16r8icm-0.dOJIkS.priceSection___3kA4m > div.sc-16r8icm-0.dOJIkS.priceTitle___1cXUG > div.priceValue___11gHJ')
                     //quote_price = await page.$('#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk')
                   
                     const innerText = await quote_price.getProperty('innerText')
