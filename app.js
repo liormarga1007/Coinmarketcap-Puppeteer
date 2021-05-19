@@ -164,16 +164,11 @@ function displaycoin(res,coinName) {
                     let select;
                              
                     select = '#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.epyToK.container > div.sc-16r8icm-0.dOJIkS.container___lbFzk'
-'
                     //select = '#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m'
                     await page.waitForSelector(`${select}`)
                     
                     const element = await page.$(`${select}`)
                     
-                    //await page.waitForSelector('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div',{timeout:5000});
-                    //const element = await page.$('#__next > div > div.container.cmc-main-section > div.cmc-main-section__content > div.cmc-currencies.aiq2zi-0.eXmmQp > div.cmc-currencies__details-panel > div');
-                    await page.click('#__next > div > div.main-content > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk > div.sc-16r8icm-0.kXPxnI.priceSection___3kA4m > div.sc-16r8icm-0.kXPxnI.priceTitle___1cXUG');                                       
-
                     const oldBoundingBox = await element.boundingBox();
                     if (oldBoundingBox != null){
                         oldBoundingBox.width= 900;
