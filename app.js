@@ -162,7 +162,8 @@ function displaycoin(res,coinName) {
                     }
                      
                     let select;
-                    select = '#__next > div > div.main-content > div.sc-57oli2-0.comDeo.cmc-body-wrapper > div > div.sc-16r8icm-0.eMxKgr.container > div.n78udj-0.jskEGI'
+                    
+                    select = '#__next > div > div.main-content > div.sc-4vztjb-0.cLXodu.cmc-body-wrapper > div > div.sc-1prm8qw-0.gCtjhg.container > div.n78udj-0.jskEGI'
                     await page.waitForSelector(`${select}`)
                     
                     const element = await page.$(`${select}`)
@@ -181,9 +182,8 @@ function displaycoin(res,coinName) {
                     }
                     
 
-                    let quote_price;
-                                                
-                    quote_price = await page.$('#__next > div > div.main-content > div.sc-57oli2-0.comDeo.cmc-body-wrapper > div > div.sc-16r8icm-0.eMxKgr.container > div.n78udj-0.jskEGI > div > div.sc-16r8icm-0.kjciSH.priceSection > div.sc-16r8icm-0.kjciSH.priceTitle > div')
+                    let quote_price;        
+                    quote_price = await page.$('#__next > div > div.main-content > div.sc-4vztjb-0.cLXodu.cmc-body-wrapper > div > div.sc-1prm8qw-0.gCtjhg.container > div.n78udj-0.jskEGI > div > div.sc-1prm8qw-0.cyZVgY.priceSection > div.sc-1prm8qw-0.cyZVgY.priceTitle > div > span')
                     //quote_price = await page.$('#__next > div > div.sc-57oli2-0.dEqHl.cmc-body-wrapper > div > div.sc-16r8icm-0.hNsOU.container > div.sc-16r8icm-0.kXPxnI.container___lbFzk')
                   
                     const innerText = await quote_price.getProperty('innerText')
